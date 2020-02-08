@@ -1,4 +1,7 @@
+package hibernate;
 
+
+import hibernate.HibernateUtil;
 import Mapping.Client;
 import java.util.ArrayList;
 import org.hibernate.Query;
