@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Mapping.Client;
 import java.util.Arrays;
+import javax.servlet.RequestDispatcher;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -43,31 +44,59 @@ public class ServletViewClientProgByCoach extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             // Récupérer l'id du client à vouloir afficher
             String idClient = request.getParameter("idclient");
-            
-            /*----- Ouverture de la session et de la transaction -----*/ Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+
+            /*----- Ouverture de la session et de la transaction -----*/ 
+            Session session = HibernateUtil.getSessionFactory().getCurrentSession();
             Transaction t = session.beginTransaction();
 
             Client client = (Client) session.load(Client.class, idClient);
 
-            out.println("<?xml version=\"1.0\"?>");
-
-            out.println("<client>");
-            out.println("<nom>" + client.getNomcli() + "</nom>");
-            out.println("<prenom>" + client.getPrenomcli() + "</prenom>");
-            out.println("<age>" + client.getAgeClient() + "</age>");
-            out.println("<profil>" + client.getProfil() + "</profil>");
-            out.println("<sexe>" + client.getSexecli() + "</sexe>");
-            out.println("<poids>" + client.getPoidscli() + "</poids>");
-            out.println("<taille>" + client.getTaillecli() + "</taille>");
-            out.println("<email>" + client.getMailcli() + "</email>");
-            out.println("<tel>" + client.getTelcli() + "</tel>");
-            out.println("<dateNaissance>" + client.getDatenaisscli() + "</dateNaissance>");
-            out.println("<photo>" + Arrays.toString(client.getPhotocli()) + "</photo>");
-
-            out.println("</client>");
-            
+//            out.println("<?xml version=\"1.0\"?>");
+//
+//            out.println("<client>");
+//            out.println("<nom>" + client.getNomcli() + "</nom>");
+//            out.println("<prenom>" + client.getPrenomcli() + "</prenom>");
+//            out.println("<age>" + client.getAgeClient() + "</age>");
+//            out.println("<profil>" + client.getProfil() + "</profil>");
+//            out.println("<sexe>" + client.getSexecli() + "</sexe>");
+//            out.println("<poids>" + client.getPoidscli() + "</poids>");
+//            out.println("<taille>" + client.getTaillecli() + "</taille>");
+//            out.println("<email>" + client.getMailcli() + "</email>");
+//            out.println("<tel>" + client.getTelcli() + "</tel>");
+//            out.println("<dateNaissance>" + client.getDatenaisscli() + "</dateNaissance>");
+//            out.println("<photo>" + Arrays.toString(client.getPhotocli()) + "</photo>");
+//
+//            out.println("</client>");
+//            
             t.commit();
             session.close();
+        
+
+//            try {
+//                    // retourner à la page du ViewListeClientByCoach
+//                    RequestDispatcher rd = request.getRequestDispatcher("ViewListeClientByCoach");
+//                    // rajotuer les informations
+//                    request.setAttribute("nomClient", client.getNomcli());
+//                    request.setAttribute("prenomClient", client.getPrenomcli());
+//                    request.setAttribute("ageClient", client.getAgeClient());
+//                    request.setAttribute("profilClient", client.getProfil());
+//                    request.setAttribute("sexeClient", client.getSexecli());
+//                    request.setAttribute("poidsClient", client.getPoidscli());
+//                    request.setAttribute("tailleClient", client.getTaillecli());
+//                    request.setAttribute("mailClient", client.getMailcli());
+//                    request.setAttribute("telClient", client.getTelcli());
+//                    request.setAttribute("dateNaissanceClient", client.getDatenaisscli());
+//                    request.setAttribute("photoClient", client.getPhotocli());
+//
+//                    rd.forward(request, response);
+//                }
+//            } catch (Exception ex) {
+//                // retour sur la page d'avant avec un message d'erreur
+//                RequestDispatcher rd = request.getRequestDispatcher("ViewListeClientByCoach");
+//                // rajouter un attribut message
+//                request.setAttribute("msg_erreur", ex.getMessage());
+//                rd.forward(request, response);
+//            }
         }
     }
 
