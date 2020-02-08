@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 8 f??vr. 2020 15:26:41 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Mapping.Exercice" table="EXERCICE" catalog="db_21506847" optimistic-lock="version">
+        <id name="codeexo" type="java.lang.Integer">
+            <column name="CODEEXO" />
+            <generator class="identity" />
+        </id>
+        <property name="nomexo" type="string">
+            <column name="NOMEXO" length="32" />
+        </property>
+        <property name="imageexo" type="binary">
+            <column name="IMAGEEXO" />
+        </property>
+        <property name="descriptionexo" type="string">
+            <column name="DESCRIPTIONEXO" length="600" />
+        </property>
+        <set name="composerSeances" table="COMPOSER_SEANCE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODEEXO" not-null="true" />
+            </key>
+            <one-to-many class="Mapping.ComposerSeance" />
+        </set>
+        <set name="executerExos" table="EXECUTER_EXO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODEEXO" not-null="true" />
+            </key>
+            <one-to-many class="Mapping.ExecuterExo" />
+        </set>
+        <set name="composerCircuits" table="COMPOSER_CIRCUIT" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODEEXO" not-null="true" />
+            </key>
+            <one-to-many class="Mapping.ComposerCircuit" />
+        </set>
+    </class>
+</hibernate-mapping>

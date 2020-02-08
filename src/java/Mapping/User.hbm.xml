@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 8 f??vr. 2020 15:26:41 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Mapping.User" table="USER" catalog="db_21506847" optimistic-lock="version">
+        <id name="iduser" type="java.lang.Integer">
+            <column name="IDUSER" />
+            <generator class="identity" />
+        </id>
+        <property name="loginuser" type="string">
+            <column name="LOGINUSER" length="32" />
+        </property>
+        <property name="passworduser" type="string">
+            <column name="PASSWORDUSER" length="32" />
+        </property>
+        <set name="coaches" table="COACH" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IDUSER" />
+            </key>
+            <one-to-many class="Mapping.Coach" />
+        </set>
+        <set name="notifiersForIduserSender" table="NOTIFIER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IDUSER_SENDER" not-null="true" />
+            </key>
+            <one-to-many class="Mapping.Notifier" />
+        </set>
+        <set name="notifiersForIduserReceiver" table="NOTIFIER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IDUSER_RECEIVER" not-null="true" />
+            </key>
+            <one-to-many class="Mapping.Notifier" />
+        </set>
+        <set name="clients" table="CLIENT" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IDUSER" />
+            </key>
+            <one-to-many class="Mapping.Client" />
+        </set>
+    </class>
+</hibernate-mapping>

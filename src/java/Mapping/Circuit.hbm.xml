@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 8 f??vr. 2020 15:26:41 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Mapping.Circuit" table="CIRCUIT" catalog="db_21506847" optimistic-lock="version">
+        <id name="codecir" type="java.lang.Integer">
+            <column name="CODECIR" />
+            <generator class="identity" />
+        </id>
+        <property name="nomcir" type="string">
+            <column name="NOMCIR" length="32" />
+        </property>
+        <set name="seances" table="SEANCE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODECIR" />
+            </key>
+            <one-to-many class="Mapping.Seance" />
+        </set>
+        <set name="executerCircuits" table="EXECUTER_CIRCUIT" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODECIR" not-null="true" />
+            </key>
+            <one-to-many class="Mapping.ExecuterCircuit" />
+        </set>
+        <set name="composerCircuits" table="COMPOSER_CIRCUIT" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODECIR" not-null="true" />
+            </key>
+            <one-to-many class="Mapping.ComposerCircuit" />
+        </set>
+    </class>
+</hibernate-mapping>

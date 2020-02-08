@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 8 f??vr. 2020 15:26:41 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Mapping.OccurrenceS" table="OCCURRENCE_S" catalog="db_21506847" optimistic-lock="version">
+        <id name="codeoccs" type="java.lang.Integer">
+            <column name="CODEOCCS" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="seance" class="Mapping.Seance" fetch="select">
+            <column name="CODESEANCE" not-null="true" />
+        </many-to-one>
+        <property name="dateoccs" type="date">
+            <column name="DATEOCCS" length="10" />
+        </property>
+        <property name="isvalid" type="java.lang.Boolean">
+            <column name="ISVALID" />
+        </property>
+        <set name="executerCircuits" table="EXECUTER_CIRCUIT" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODEOCCS" not-null="true" />
+            </key>
+            <one-to-many class="Mapping.ExecuterCircuit" />
+        </set>
+        <set name="executerExos" table="EXECUTER_EXO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODEOCCS" not-null="true" />
+            </key>
+            <one-to-many class="Mapping.ExecuterExo" />
+        </set>
+        <set name="evaluers" table="EVALUER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODEOCCS" not-null="true" />
+            </key>
+            <one-to-many class="Mapping.Evaluer" />
+        </set>
+    </class>
+</hibernate-mapping>

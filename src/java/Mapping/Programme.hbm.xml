@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 8 f??vr. 2020 15:26:41 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Mapping.Programme" table="PROGRAMME" catalog="db_21506847" optimistic-lock="version">
+        <id name="codeprog" type="java.lang.Integer">
+            <column name="CODEPROG" />
+            <generator class="identity" />
+        </id>
+        <property name="nomprog" type="string">
+            <column name="NOMPROG" length="32" />
+        </property>
+        <property name="isstandard" type="java.lang.Boolean">
+            <column name="ISSTANDARD" />
+        </property>
+        <set name="profils" table="CORRESPONDRE" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="CODEPROG" not-null="true" />
+            </key>
+            <many-to-many entity-name="Mapping.Profil">
+                <column name="CODEPROF" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="affecters" table="AFFECTER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODEPROG" not-null="true" />
+            </key>
+            <one-to-many class="Mapping.Affecter" />
+        </set>
+        <set name="seances" table="SEANCE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODEPROG" />
+            </key>
+            <one-to-many class="Mapping.Seance" />
+        </set>
+    </class>
+</hibernate-mapping>

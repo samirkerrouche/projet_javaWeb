@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 8 f??vr. 2020 15:26:41 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Mapping.Evaluer" table="EVALUER" catalog="db_21506847" optimistic-lock="version">
+        <composite-id name="id" class="Mapping.EvaluerId">
+            <key-property name="codeoccs" type="int">
+                <column name="CODEOCCS" />
+            </key-property>
+            <key-property name="codecli" type="int">
+                <column name="CODECLI" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="client" class="Mapping.Client" update="false" insert="false" fetch="select">
+            <column name="CODECLI" not-null="true" />
+        </many-to-one>
+        <many-to-one name="occurrenceS" class="Mapping.OccurrenceS" update="false" insert="false" fetch="select">
+            <column name="CODEOCCS" not-null="true" />
+        </many-to-one>
+        <property name="dateeval" type="timestamp">
+            <column name="DATEEVAL" length="19" />
+        </property>
+        <property name="bras" type="string">
+            <column name="BRAS" length="32" />
+        </property>
+        <property name="poitrine" type="string">
+            <column name="POITRINE" length="32" />
+        </property>
+        <property name="taille" type="string">
+            <column name="TAILLE" length="32" />
+        </property>
+        <property name="hanches" type="string">
+            <column name="HANCHES" length="32" />
+        </property>
+        <property name="cuisses" type="string">
+            <column name="CUISSES" length="32" />
+        </property>
+        <property name="cinqminallong" type="java.lang.Double">
+            <column name="CINQMINALLONG" precision="5" />
+        </property>
+        <property name="apresflexion" type="java.lang.Double">
+            <column name="APRESFLEXION" precision="5" />
+        </property>
+        <property name="uneminallong" type="java.lang.Double">
+            <column name="UNEMINALLONG" precision="5" />
+        </property>
+    </class>
+</hibernate-mapping>

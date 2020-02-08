@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 8 f??vr. 2020 15:26:41 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Mapping.Seance" table="SEANCE" catalog="db_21506847" optimistic-lock="version">
+        <id name="codeseance" type="java.lang.Integer">
+            <column name="CODESEANCE" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="circuit" class="Mapping.Circuit" fetch="select">
+            <column name="CODECIR" />
+        </many-to-one>
+        <many-to-one name="programme" class="Mapping.Programme" fetch="select">
+            <column name="CODEPROG" />
+        </many-to-one>
+        <property name="nomseance" type="string">
+            <column name="NOMSEANCE" length="32" />
+        </property>
+        <property name="isbilan" type="java.lang.Boolean">
+            <column name="ISBILAN" />
+        </property>
+        <set name="composerSeances" table="COMPOSER_SEANCE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODESEANCE" not-null="true" />
+            </key>
+            <one-to-many class="Mapping.ComposerSeance" />
+        </set>
+        <set name="occurrenceSs" table="OCCURRENCE_S" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODESEANCE" not-null="true" />
+            </key>
+            <one-to-many class="Mapping.OccurrenceS" />
+        </set>
+    </class>
+</hibernate-mapping>

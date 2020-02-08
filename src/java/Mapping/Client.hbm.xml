@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 8 f??vr. 2020 15:26:41 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Mapping.Client" table="CLIENT" catalog="db_21506847" optimistic-lock="version">
+        <id name="codecli" type="java.lang.Integer">
+            <column name="CODECLI" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="profil" class="Mapping.Profil" fetch="select">
+            <column name="CODEPROF" />
+        </many-to-one>
+        <many-to-one name="user" class="Mapping.User" fetch="select">
+            <column name="IDUSER" />
+        </many-to-one>
+        <property name="nomcli" type="string">
+            <column name="NOMCLI" length="32" />
+        </property>
+        <property name="prenomcli" type="string">
+            <column name="PRENOMCLI" length="32" />
+        </property>
+        <property name="datenaisscli" type="date">
+            <column name="DATENAISSCLI" length="10" />
+        </property>
+        <property name="taillecli" type="string">
+            <column name="TAILLECLI" length="32" />
+        </property>
+        <property name="poidscli" type="string">
+            <column name="POIDSCLI" length="32" />
+        </property>
+        <property name="mailcli" type="string">
+            <column name="MAILCLI" length="100" />
+        </property>
+        <property name="telcli" type="string">
+            <column name="TELCLI" length="32" />
+        </property>
+        <property name="dateinscriptioncli" type="timestamp">
+            <column name="DATEINSCRIPTIONCLI" length="19" />
+        </property>
+        <property name="commadmincli" type="string">
+            <column name="COMMADMINCLI" />
+        </property>
+        <property name="statutcli" type="string">
+            <column name="STATUTCLI" length="32" />
+        </property>
+        <property name="sexecli" type="java.lang.Character">
+            <column name="SEXECLI" length="1" />
+        </property>
+        <property name="photocli" type="binary">
+            <column name="PHOTOCLI" />
+        </property>
+        <set name="executerCircuits" table="EXECUTER_CIRCUIT" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODECLI" not-null="true" />
+            </key>
+            <one-to-many class="Mapping.ExecuterCircuit" />
+        </set>
+        <set name="affecters" table="AFFECTER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODECLI" not-null="true" />
+            </key>
+            <one-to-many class="Mapping.Affecter" />
+        </set>
+        <set name="evaluers" table="EVALUER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODECLI" not-null="true" />
+            </key>
+            <one-to-many class="Mapping.Evaluer" />
+        </set>
+        <set name="executerExos" table="EXECUTER_EXO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODECLI" not-null="true" />
+            </key>
+            <one-to-many class="Mapping.ExecuterExo" />
+        </set>
+    </class>
+</hibernate-mapping>

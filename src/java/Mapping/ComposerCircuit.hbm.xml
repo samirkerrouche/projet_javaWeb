@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 8 f??vr. 2020 15:26:41 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Mapping.ComposerCircuit" table="COMPOSER_CIRCUIT" catalog="db_21506847" optimistic-lock="version">
+        <composite-id name="id" class="Mapping.ComposerCircuitId">
+            <key-property name="codeexo" type="int">
+                <column name="CODEEXO" />
+            </key-property>
+            <key-property name="codecir" type="int">
+                <column name="CODECIR" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="circuit" class="Mapping.Circuit" update="false" insert="false" fetch="select">
+            <column name="CODECIR" not-null="true" />
+        </many-to-one>
+        <many-to-one name="exercice" class="Mapping.Exercice" update="false" insert="false" fetch="select">
+            <column name="CODEEXO" not-null="true" />
+        </many-to-one>
+        <property name="ordreexocir" type="java.lang.Integer">
+            <column name="ORDREEXOCIR" />
+        </property>
+        <property name="repetiminexo" type="int">
+            <column name="REPETIMINEXO" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

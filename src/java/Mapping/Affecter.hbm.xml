@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 8 f??vr. 2020 15:26:41 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Mapping.Affecter" table="AFFECTER" catalog="db_21506847" optimistic-lock="version">
+        <composite-id name="id" class="Mapping.AffecterId">
+            <key-property name="codeprog" type="int">
+                <column name="CODEPROG" />
+            </key-property>
+            <key-property name="codecli" type="int">
+                <column name="CODECLI" />
+            </key-property>
+            <key-property name="dateaff" type="timestamp">
+                <column name="DATEAFF" length="19" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="client" class="Mapping.Client" update="false" insert="false" fetch="select">
+            <column name="CODECLI" not-null="true" />
+        </many-to-one>
+        <many-to-one name="programme" class="Mapping.Programme" update="false" insert="false" fetch="select">
+            <column name="CODEPROG" not-null="true" />
+        </many-to-one>
+        <property name="datefinaff" type="timestamp">
+            <column name="DATEFINAFF" length="19" />
+        </property>
+        <property name="statutaff" type="string">
+            <column name="STATUTAFF" length="32" />
+        </property>
+    </class>
+</hibernate-mapping>

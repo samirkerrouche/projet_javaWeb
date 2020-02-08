@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 8 f??vr. 2020 15:26:41 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Mapping.Profil" table="PROFIL" catalog="db_21506847" optimistic-lock="version">
+        <id name="codeprof" type="java.lang.Integer">
+            <column name="CODEPROF" />
+            <generator class="identity" />
+        </id>
+        <property name="nomprof" type="string">
+            <column name="NOMPROF" length="32" />
+        </property>
+        <set name="programmes" table="CORRESPONDRE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODEPROF" not-null="true" />
+            </key>
+            <many-to-many entity-name="Mapping.Programme">
+                <column name="CODEPROG" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="clients" table="CLIENT" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CODEPROF" />
+            </key>
+            <one-to-many class="Mapping.Client" />
+        </set>
+    </class>
+</hibernate-mapping>
