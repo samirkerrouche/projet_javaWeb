@@ -4,9 +4,33 @@
         <servlet-name>ServletViewClientProgByCoach</servlet-name>
         <servlet-class>controller.ServletViewClientProgByCoach</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewClientProgByCoach</servlet-name>
+        <jsp-file>/JSP/ViewClientProgByCoach.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewListeClientByCoach</servlet-name>
+        <jsp-file>/JSP/ViewListeClientByCoach.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletViewClientSeances</servlet-name>
+        <servlet-class>controller.ServletViewClientSeances</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletViewClientProgByCoach</servlet-name>
         <url-pattern>/ServletViewClientProgByCoach</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewClientProgByCoach</servlet-name>
+        <url-pattern>/ViewClientProgByCoach</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewListeClientByCoach</servlet-name>
+        <url-pattern>/ViewListeClientByCoach</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletViewClientSeances</servlet-name>
+        <url-pattern>/ServletViewClientSeances</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

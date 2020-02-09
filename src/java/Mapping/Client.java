@@ -1,6 +1,10 @@
 package Mapping;
 // Generated 8 févr. 2020 15:26:40 by Hibernate Tools 4.3.1
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -217,8 +221,13 @@ public class Client implements java.io.Serializable {
     }
 
     public int getAgeClient() {
-        return 100;
-        // todo
+        LocalDate now = LocalDate.now();
+        Date dateNaissance = getDatenaisscli();
+        LocalDate dateNaissanceLD = Instant.ofEpochMilli(dateNaissance.getTime())
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
+        return Period.between(dateNaissanceLD, now).getYears();
     }
 
 }

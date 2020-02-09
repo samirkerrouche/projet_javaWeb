@@ -7,14 +7,15 @@ package controller;
 
 import hibernate.HibernateUtil;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Mapping.Client;
-import java.util.Arrays;
+import Mapping.Programme;
+import java.sql.Timestamp;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -38,65 +39,60 @@ public class ServletViewClientProgByCoach extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        /*----- Type de la réponse -----*/
-        response.setContentType("application/xml;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try {
             // Récupérer l'id du client à vouloir afficher
             String idClient = request.getParameter("idclient");
-
-            /*----- Ouverture de la session et de la transaction -----*/ 
+            // convertir le idClient en int
+            int id = Integer.parseInt(idClient);
+            /*----- Ouverture de la session et de la transaction -----*/
             Session session = HibernateUtil.getSessionFactory().getCurrentSession();
             Transaction t = session.beginTransaction();
-
-            Client client = (Client) session.load(Client.class, idClient);
-
-//            out.println("<?xml version=\"1.0\"?>");
-//
-//            out.println("<client>");
-//            out.println("<nom>" + client.getNomcli() + "</nom>");
-//            out.println("<prenom>" + client.getPrenomcli() + "</prenom>");
-//            out.println("<age>" + client.getAgeClient() + "</age>");
-//            out.println("<profil>" + client.getProfil() + "</profil>");
-//            out.println("<sexe>" + client.getSexecli() + "</sexe>");
-//            out.println("<poids>" + client.getPoidscli() + "</poids>");
-//            out.println("<taille>" + client.getTaillecli() + "</taille>");
-//            out.println("<email>" + client.getMailcli() + "</email>");
-//            out.println("<tel>" + client.getTelcli() + "</tel>");
-//            out.println("<dateNaissance>" + client.getDatenaisscli() + "</dateNaissance>");
-//            out.println("<photo>" + Arrays.toString(client.getPhotocli()) + "</photo>");
-//
-//            out.println("</client>");
-//            
+            Client client = (Client) session.get(Client.class, id);
+            // todo : regrouper dans une seule requete et trouver un moyen de comment accèder aux différents champs
+            List resultatCodeProg = session.createSQLQuery("SELECT aff.CODEPROG "
+                    + "FROM AFFECTER aff "
+                    + "WHERE aff.CODECLI = " + client.getCodecli() + " "
+                    + "AND aff.DATEAFF <= SYSDATE() "
+                    + "AND aff.DATEFINAFF IS NULL "
+                    + "AND aff.STATUTAFF = 'en cours'").list();
+            List resultatDateAff = session.createSQLQuery("SELECT aff.DATEAFF "
+                    + "FROM AFFECTER aff "
+                    + "WHERE aff.CODECLI = " + client.getCodecli() + " "
+                    + "AND aff.DATEAFF <= SYSDATE() "
+                    + "AND aff.DATEFINAFF IS NULL "
+                    + "AND aff.STATUTAFF = 'en cours'").list();
+            List resultatStatutAff = session.createSQLQuery("SELECT aff.STATUTAFF "
+                    + "FROM AFFECTER aff "
+                    + "WHERE aff.CODECLI = " + client.getCodecli() + " "
+                    + "AND aff.DATEAFF <= SYSDATE() "
+                    + "AND aff.DATEFINAFF IS NULL "
+                    + "AND aff.STATUTAFF = 'en cours'").list();
+            // récupération des résultats
+            int programmeId = (int) resultatCodeProg.get(0);
+            String statutAff = (String) resultatStatutAff.get(0);
+            Timestamp dateAff = (Timestamp) resultatDateAff.get(0);
+            // charger l'objet programme
+            Programme programme = (Programme) session.get(Programme.class, programmeId);
+            // retourner à la page du ViewListeClientByCoach
+            RequestDispatcher rd = request.getRequestDispatcher("ViewClientProgByCoach");
+            // set l'objet client pour le passer à la page suivante
+            request.setAttribute("client", client);
+            // set l'objet programme pour le passer la page suivante
+            request.setAttribute("programme", programme);
+            // set les autres informations pour la page suivante
+            request.setAttribute("dateAff", dateAff.toString());
+            request.setAttribute("statutAff", statutAff);
+            // aller vers la page de ViewClientProgByCoach
+            rd.forward(request, response);
+            // ferméture de la session et commit la transaction
             t.commit();
             session.close();
-        
-
-//            try {
-//                    // retourner à la page du ViewListeClientByCoach
-//                    RequestDispatcher rd = request.getRequestDispatcher("ViewListeClientByCoach");
-//                    // rajotuer les informations
-//                    request.setAttribute("nomClient", client.getNomcli());
-//                    request.setAttribute("prenomClient", client.getPrenomcli());
-//                    request.setAttribute("ageClient", client.getAgeClient());
-//                    request.setAttribute("profilClient", client.getProfil());
-//                    request.setAttribute("sexeClient", client.getSexecli());
-//                    request.setAttribute("poidsClient", client.getPoidscli());
-//                    request.setAttribute("tailleClient", client.getTaillecli());
-//                    request.setAttribute("mailClient", client.getMailcli());
-//                    request.setAttribute("telClient", client.getTelcli());
-//                    request.setAttribute("dateNaissanceClient", client.getDatenaisscli());
-//                    request.setAttribute("photoClient", client.getPhotocli());
-//
-//                    rd.forward(request, response);
-//                }
-//            } catch (Exception ex) {
-//                // retour sur la page d'avant avec un message d'erreur
-//                RequestDispatcher rd = request.getRequestDispatcher("ViewListeClientByCoach");
-//                // rajouter un attribut message
-//                request.setAttribute("msg_erreur", ex.getMessage());
-//                rd.forward(request, response);
-//            }
+        } catch (Exception ex) {
+            // retour sur la page d'avant avec un message d'erreur
+            RequestDispatcher rd = request.getRequestDispatcher("ViewListeClientByCoach");
+            // rajouter un attribut message
+            request.setAttribute("msg_erreur", ex.getMessage());
+            rd.forward(request, response);
         }
     }
 
@@ -138,5 +134,4 @@ public class ServletViewClientProgByCoach extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

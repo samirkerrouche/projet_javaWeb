@@ -1,23 +1,48 @@
 <%-- 
     Document   : ViewClientProgByCoach
     Created on : 2020-2-8, 16:30:04
-    Author     : webAgile
+    Author     : WebAgile
 --%>
 
+<%@page import="Mapping.Programme"%>
+<%@page import="java.util.Date"%>
+<%@page import="Mapping.Client"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+    <%
+        // récupérer l'objet client envoyer depuis la servlet
+        Client client = (Client) request.getAttribute("client");
+        String nom = client.getNomcli();
+        String prenom = client.getPrenomcli();
+        String tel = client.getTelcli();
+        Date dateNaiss = client.getDatenaisscli();
+        String email = client.getMailcli();
+        char sexe = client.getSexecli();
+        String poids = client.getPoidscli();
+        String taille = client.getTaillecli();
+        int age = client.getAgeClient();
+        String profil = client.getProfil().getNomprof();
+        byte[] photo = client.getPhotocli();
+        // récupérer l'objet programme envoyer depuis la servlet
+        Programme programme = (Programme) request.getAttribute("programme");
+        int codeProg = programme.getCodeprog();
+        String nomProg = programme.getNomprog();
+        // récupérer les autres infos de la table AFFECTER depuis la servlet
+        String dateAff = (String) request.getAttribute("dateAff");
+        String statutAff = (String) request.getAttribute("statutAff");
+    %>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <script src="../JS/fonctions.js"></script>
-        <link rel="stylesheet" type="text/css" href="../CSS/profilClient.css">        
-        <title>Profil client view by coach</title>
+        <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="./JS/fonctions.js"></script>
+        <link rel="stylesheet" type="text/css" href="./CSS/profilClient.css">        
+        <title>Profil du client <%= nom%> <%= prenom%></title>
     </head>
     <body>
         <div class="container emp-profile">
@@ -25,135 +50,105 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="profile-img" id="photoClient">
-                            <img id="photoClientImg" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="Photo du client."/>
+                            <img id="photoClientImg" src="<%= photo%>" alt="Photo du client."/>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="profile-head">
-                                    <h4 id="inputNomPrenomClient">
-                                        Nom prenom de client
-                                    </h4>
-                                    <h6 id="roleClient">
-                                        Role de User
-                                    </h6>
-                                    <p class="proile-rating">RANKINGS : <span>8/10</span></p>
+                            <h4 id="inputNomPrenomClient">
+                                <%= nom%> <%= prenom%>
+                            </h4>
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Infos</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Program</a>
+                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Programme</a>
                                 </li>
                             </ul>
                         </div>
-                    </div>
-                    <div class="col-md-2">
-                        <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="profile-work">
                             <br/>
-                            <h4>Informations physique</h4>
-                            <p>Sex : <span id="inputSexClient"></span></p>
-                            <p>Poids : <span id="inputPoidsClient"></span></p>
-                            <p>Taille : <span id="inputTailleClient"></span></p>
-                            <p>Age : <span id="inputAgeClient"></span></p>
-                            <p>SKILLS</p>
-                            <p>Profil : <span id="inputProfilClient"></span></p>
+                            <h4>Informations physiques</h4>
+                            <p>Sexe : <%=  sexe%></p>
+                            <p>Poids : <%=  poids%> kg</p>
+                            <p>Taille : <%= taille%></p>
+                            <p>Age : <%= age%> ans</p>
+                            <p>Profil :<%= profil%></p>
                         </div>
                     </div>
                     <div class="col-md-8">
                         <div class="tab-content profile-tab" id="myTabContent">
                             <div class="tab-pane fade in active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>User Id</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p id="inputIdClient">12345</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Name</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p id="inputNomPrenomClient">CHEN Wenchang</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Email</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p id="inputMailClient">chenwenchang03@gmail.com</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Phone</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p id="inputPhoneClient">123 456 7890</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Date de naissance</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p id="inputDateNaissanceClient">01-01-1995</p>
-                                            </div>
-                                        </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Nom du client</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><%=  nom%> <%=  prenom%></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Email</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><%=  email%></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Téléphone</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><%=  tel%></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Date de naissance</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><%= dateNaiss%></p>
+                                    </div>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Nom de program</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p id="inputNomProgramClient">Reprise de xx</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Statut</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p id="inputStatutProramClient">En cours</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Date d'affectation</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p id="inputDateAffClient">01-01-2020</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Date de fin</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p id="inputDateFinClient">01-02-2020</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Autre</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p>autre</p>
-                                            </div>
-                                        </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Nom de program</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p id="inputNomProgramClient"><%= nomProg%></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Statut</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><%= statutAff%></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Date d'affectation</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><%= dateAff%></p>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <label>Details</label><br/>
-                                        <p>Your detail description</p>
-                                         <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Your Detail description"/>
+                                        <label>Séances</label><br/>
+                                        <p>Voir les séances du programme</p>
+                                        <input type="button" id="btnViewProgSeances" value="Afficher les séances" onclick="AfficherClientSeances(<%= codeProg%>);"/>
+                                    </div>
+                                    <div id="divSeances">
                                     </div>
                                 </div>
                             </div>

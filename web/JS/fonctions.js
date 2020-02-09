@@ -9,15 +9,15 @@
  *
  * On utilise la propriété 'responseText' de l'objet XMLHttpRequest afin
  * de récupérer sous forme de texte le flux envoyé par le serveur.
+ * @param {int} codeProg : le code d'un programme.
  */
-function AfficherClientInfos()
-{
+function AfficherClientSeances(codeProg) {
     // Objet XMLHttpRequest.
     var xhr = new XMLHttpRequest();
-
     // Requête au serveur avec les paramètres éventuels. (url mapping utilisé)
-    xhr.open("GET", "ServletViewProgByCoach");
-
+    // créer l'url avec les paramètres
+    var url = "ServletViewClientSeances" + "?progID=" + codeProg;
+    xhr.open("GET", url);
     // On précise ce que l'on va faire quand on aura reçu la réponse du serveur.
     xhr.onload = function ()
     {
@@ -25,21 +25,18 @@ function AfficherClientInfos()
         if (xhr.status === 200)
         {
             // Elément html que l'on va mettre à jour.
-            var elt = document.getElementById("tt_zone");
-            elt.innerHTML = xhr.responseText;
+            var elt = document.getElementById("divSeances");
+            // doc de la réponse HTML
+            var doc = xhr.responseXML;
+            var seances = doc.getElementsByTagName("seance"); // un tableau
+            var chaine = "";
+            for (var i = 0; i < seances.length; i++) {
+                j = i + 1;
+                chaine += "<li>" + j + ". " + seances[i].firstElementChild.innerHTML + "</li>";
+            }
+            elt.innerHTML = "<ul>" + chaine + "</ul>";
         }
     };
-
     // Envoie de la requête.
     xhr.send();
 }
-/**
- * Lancement après le chargement du DOM.
- * il faut toujors à la fin
- */
-document.addEventListener("DOMContentLoaded", () => {
-    
-    document.getElementById("bt_afficherUnClientByCoach").addEventListener("click", AfficherClientInfos);
-    
-}
-);
