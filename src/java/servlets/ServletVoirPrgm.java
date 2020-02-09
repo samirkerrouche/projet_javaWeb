@@ -5,6 +5,8 @@
  */
 package servlets;
 
+import Mapping.Circuit;
+import Mapping.ComposerCircuit;
 import Mapping.ComposerSeance;
 import Mapping.Exercice;
 import hibernate.TestHibernate;
@@ -83,7 +85,9 @@ public class ServletVoirPrgm extends HttpServlet {
                 out.println("<programme>");
                 out.println("<nbSeances>" + mapSeances.size() + "</nbSeances>");
                 for (Map.Entry<Seance, List<ComposerSeance>> e : mapSeances.entrySet()) {
-                    out.print("<seance>" + e.getKey().getNomseance()+"");
+                   
+                    if(e.getKey().getCircuit() == null){
+                         out.print("<seance>"+e.getKey().getNomseance());
                         for (ComposerSeance cs : e.getValue()) {
                             out.println("<exercice>");
                             String nomE,descE;
@@ -101,9 +105,24 @@ public class ServletVoirPrgm extends HttpServlet {
                             out.print("<nomExo>" +nomE+ "</nomExo>");
                             out.print("<description>" + descE + "</description>");
                             out.print("<image>" + imgE + "</image>");
-                            out.print("</exercice>");
+                            out.println("</exercice>");
                         }
-                    out.println("</seance>");
+                        out.println("</seance>");
+                    }else{ //C'est une seance a circuit.
+                        Circuit circuit = e.getKey().getCircuit();
+                         out.println("<seance>(EN CIRCUIT)"+circuit.getNomcir());
+                        List<ComposerCircuit> compCir = TestHibernate.getExoFromCircuit(circuit);
+                        for(ComposerCircuit cc : compCir){
+                            Exercice exo = cc.getExercice();
+                            out.print("<exercice>");
+                            out.print("<nomExo>" +exo.getNomexo()+ "</nomExo>");
+                            out.print("<description>" + exo.getDescriptionexo() + "</description>");
+                            out.print("<image>" + exo.getImageexo() + "</image>");
+                            out.println("</exercice>");
+                        }
+                        out.println("</seance>");
+                    }
+                    
                 }
                 out.print("</programme>");
             }

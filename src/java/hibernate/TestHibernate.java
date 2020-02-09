@@ -1,7 +1,9 @@
 package hibernate;
 
+import Mapping.Circuit;
 import hibernate.HibernateUtil;
 import Mapping.Client;
+import Mapping.ComposerCircuit;
 import Mapping.ComposerSeance;
 import Mapping.Programme;
 import Mapping.Seance;
@@ -123,6 +125,26 @@ public class TestHibernate {
         Query q = session.createQuery(hql);
         List<ComposerSeance> composers = (List<ComposerSeance>) q.list();
         return composers;
+    }
+    
+    /***
+     * 
+     * @param seance
+     * @return le circuit de la seance si elle en possede une
+     */
+    public static List<ComposerCircuit> getExoFromCircuit(Circuit circuit){
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction t;
+        try {
+            t = session.beginTransaction();
+        } catch (Exception e) {
+            t = session.getTransaction();
+        }
+        // Votre code sera ici !
+        String hql = "from ComposerCircuit as cc  where  codecir=" +circuit.getCodecir();
+        Query q = session.createQuery(hql);
+        List<ComposerCircuit> comCir  = (List<ComposerCircuit>) q.list();
+        return comCir;
     }
 
     //PARTIE DES CLIENTS

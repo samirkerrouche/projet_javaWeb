@@ -104,28 +104,23 @@ function giveDataPrgm() {
             alert("Nombre de séances " + nbSeance);
             alert("reçus par le js : " + lstSeances.length);
             var chaine = "";
+            var zonePrgm = document.getElementById("zonePrgm");
+            zonePrgm.innerHTML = chaine;
             for (var i = 0; i < lstSeances.length; i++) { //Les seances
                 //On affiche la seance
-                chaine += "<div id='seance" + i + "'><div id='nomSeance'>" + lstSeances[i].firstChild.nodeValue + "</div>";
-                try {
-                    var contentSeance = lstSeances[i].getElementsByTagName("exercice"); //Prendre les noeuds exercice
-                    for (var i = 0; i < contentSeance.length; i++) {
-                        chaine += "<ul>";
-                        var nomE = contentSeance[i].getElementsByTagName("nomExo")[0];
-                        var descE = contentSeance[i].getElementsByTagName("description")[0];
-                        var imgE = contentSeance[i].getElementsByTagName("image")[0];
-                        chaine += "<li><b>" + nomE.firstChild.nodeValue + "</b></li>";
-                        chaine += "<li>" + descE.firstChild.nodeValue + "</li>";
-                        chaine += "<li>" + imgE.firstChild.nodeValue + "</li>";
-                        chaine += "</ul>";
-                    }
-                } catch (err) {
-                    alert("PAS D EXERCICE POUR CETTE SEANCE - " + err);
-                    chaine += "<ul><li>Aucun exercice pour l'instant</li></ul>";
-                } finally {
-                    chaine += "</div>";
+                chaine += "<div id='nomSeance'>" + lstSeances[i].firstChild.nodeValue + "</div>";
+                var contentSeance = lstSeances[i].getElementsByTagName("exercice"); //Prendre les noeuds exercice
+                for (var j = 0; j < contentSeance.length; j++) {
+                    chaine += "<ul>";
+                    var nomE = contentSeance[j].getElementsByTagName("nomExo")[0];
+                    var descE = contentSeance[j].getElementsByTagName("description")[0];
+                    var imgE = contentSeance[j].getElementsByTagName("image")[0];
+                    chaine += "<li><b>" + nomE.firstChild.nodeValue + "</b></li>";
+                    chaine += "<li>" + descE.firstChild.nodeValue + "</li>";
+                    chaine += "<li>" + imgE.firstChild.nodeValue + "</li>";
+                    chaine += "</ul>";
                 }
-
+                chaine += "</div>";
             }
             var zonePrgm = document.getElementById("zonePrgm");
             zonePrgm.innerHTML = chaine;
