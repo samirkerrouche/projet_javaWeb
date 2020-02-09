@@ -101,8 +101,6 @@ function giveDataPrgm() {
             var arbrePrgm = xhr.responseXML;
             var lstSeances = arbrePrgm.getElementsByTagName("seance");
             var nbSeance = arbrePrgm.getElementsByTagName("nbSeances")[0].firstChild.nodeValue;
-            alert("Nombre de séances " + nbSeance);
-            alert("reçus par le js : " + lstSeances.length);
             var chaine = "";
             var zonePrgm = document.getElementById("zonePrgm");
             zonePrgm.innerHTML = chaine;
