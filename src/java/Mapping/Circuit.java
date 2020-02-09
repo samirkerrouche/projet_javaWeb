@@ -3,6 +3,7 @@ package Mapping;
 
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -63,16 +64,38 @@ public class Circuit  implements java.io.Serializable {
         this.composerCircuits = composerCircuits;
     }
 
-
- @Override
+    @Override
     public int hashCode() {
-        return super.hashCode(); //To change body of generated methods, choose Tools | Templates.
+        int hash = 7;
+        hash = 71 * hash + Objects.hashCode(this.codecir);
+        return hash;
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj); //To change body of generated methods, choose Tools | Templates.
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Circuit other = (Circuit) obj;
+        if (!Objects.equals(this.codecir, other.codecir)) {
+            return false;
+        }
+        return true;
     }
+
+    @Override
+    public String toString() {
+        return "Circuit{" + "codecir=" + codecir + ", nomcir=" + nomcir + ", seances=" + seances + '}';
+    }
+
+
+ 
 
 }
 

@@ -1,6 +1,9 @@
 package Mapping;
 // Generated 8 févr. 2020 15:26:40 by Hibernate Tools 4.3.1
 
+import java.util.Objects;
+
+
 
 
 /**
@@ -87,17 +90,37 @@ public class ExecuterCircuit  implements java.io.Serializable {
         this.tempsrecup = tempsrecup;
     }
 
- @Override
+    @Override
     public int hashCode() {
-        return super.hashCode(); //To change body of generated methods, choose Tools | Templates.
+        int hash = 7;
+        hash = 17 * hash + Objects.hashCode(this.id);
+        return hash;
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj); //To change body of generated methods, choose Tools | Templates.
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ExecuterCircuit other = (ExecuterCircuit) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
 
+    @Override
+    public String toString() {
+        return "ExecuterCircuit{" + "id=" + id + ", circuit=" + circuit + ", client=" + client + ", occurrenceS=" + occurrenceS + ", repetimin=" + repetimin + ", repetimax=" + repetimax + ", tempsrecup=" + tempsrecup + '}';
+    }
 
+    
 }
 
 

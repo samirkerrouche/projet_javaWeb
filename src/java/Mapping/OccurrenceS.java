@@ -4,6 +4,7 @@ package Mapping;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -86,15 +87,36 @@ public class OccurrenceS  implements java.io.Serializable {
         this.evaluers = evaluers;
     }
 
- @Override
+    @Override
     public int hashCode() {
-        return super.hashCode(); //To change body of generated methods, choose Tools | Templates.
+        int hash = 5;
+        hash = 53 * hash + Objects.hashCode(this.codeoccs);
+        return hash;
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj); //To change body of generated methods, choose Tools | Templates.
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final OccurrenceS other = (OccurrenceS) obj;
+        if (!Objects.equals(this.codeoccs, other.codeoccs)) {
+            return false;
+        }
+        return true;
     }
+
+    @Override
+    public String toString() {
+        return "OccurrenceS{" + "codeoccs=" + codeoccs + ", dateoccs=" + dateoccs + ", isvalid=" + isvalid +'}';
+    }
+
 
 
 }

@@ -1,5 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <servlet>
+        <servlet-name>ServletDisplayPrgm</servlet-name>
+        <servlet-class>servlets.ServletDisplayPrgm</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletVoirPrgm</servlet-name>
+        <servlet-class>servlets.ServletVoirPrgm</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletAffecterProgramme</servlet-name>
+        <servlet-class>servlets.ServletAffecterProgramme</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletVoirClient</servlet-name>
+        <servlet-class>servlets.ServletVoirClient</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletDisplayPrgm</servlet-name>
+        <url-pattern>/ServletDisplayPrgm</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletVoirPrgm</servlet-name>
+        <url-pattern>/ServletVoirPrgm</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAffecterProgramme</servlet-name>
+        <url-pattern>/ServletAffecterProgramme</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletVoirClient</servlet-name>
+        <url-pattern>/ServletVoirClient</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

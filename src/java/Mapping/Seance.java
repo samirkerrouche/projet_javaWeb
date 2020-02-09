@@ -3,6 +3,7 @@ package Mapping;
 
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -81,16 +82,38 @@ public class Seance  implements java.io.Serializable {
         this.occurrenceSs = occurrenceSs;
     }
 
-
- @Override
+    @Override
     public int hashCode() {
-        return super.hashCode(); //To change body of generated methods, choose Tools | Templates.
+        int hash = 7;
+        hash = 83 * hash + Objects.hashCode(this.codeseance);
+        return hash;
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj); //To change body of generated methods, choose Tools | Templates.
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Seance other = (Seance) obj;
+        if (!Objects.equals(this.codeseance, other.codeseance)) {
+            return false;
+        }
+        return true;
     }
+
+    @Override
+    public String toString() {
+        return "Seance{" + "codeseance=" + codeseance +", nomseance=" + nomseance + ", isbilan=" + isbilan + '}';
+    }
+
+
+
 
 }
 

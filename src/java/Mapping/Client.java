@@ -2,8 +2,10 @@ package Mapping;
 // Generated 8 févr. 2020 15:26:40 by Hibernate Tools 4.3.1
 
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -190,17 +192,40 @@ public class Client  implements java.io.Serializable {
         this.executerExos = executerExos;
     }
 
-
- @Override
-    public int hashCode() {
-        return super.hashCode(); //To change body of generated methods, choose Tools | Templates.
+    @Override
+    public String toString() {
+        return "Client{" + "codecli=" + codecli + ", nomcli=" + nomcli + ", prenomcli=" + prenomcli + ", datenaisscli=" + datenaisscli + ", taillecli=" + taillecli + ", poidscli=" + poidscli + ", mailcli=" + mailcli + ", telcli=" + telcli + ", dateinscriptioncli=" + dateinscriptioncli + ", commadmincli=" + commadmincli + ", statutcli=" + statutcli + ", sexecli=" + sexecli + ", photocli=" + photocli + ", executerCircuits=" + executerCircuits + ", affecters=" + affecters + ", evaluers=" + evaluers + ", executerExos=" + executerExos + '}';
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj); //To change body of generated methods, choose Tools | Templates.
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Client other = (Client) obj;
+        if (!Objects.equals(this.codecli, other.codecli)) {
+            return false;
+        }
+        return true;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 37 * hash + Objects.hashCode(this.codecli);
+        return hash;
+    }
+
+  
+
+
+ 
 }
 
 
