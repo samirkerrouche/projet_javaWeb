@@ -83,26 +83,29 @@ public class ServletVoirPrgm extends HttpServlet {
                 out.println("<programme>");
                 out.println("<nbSeances>" + mapSeances.size() + "</nbSeances>");
                 for (Map.Entry<Seance, List<ComposerSeance>> e : mapSeances.entrySet()) {
-                    out.println("<seance>" + e.getKey().getNomseance());
-                    if (e.getValue() != null) {
+                    out.print("<seance>" + e.getKey().getNomseance()+"");
                         for (ComposerSeance cs : e.getValue()) {
                             out.println("<exercice>");
-                            Exercice exo = cs.getExercice();
-                            out.println("<nomExo>" + exo.getNomexo() + "</nomExo>");
-                            out.println("<description>" + exo.getDescriptionexo() + "</description>");
-                            out.println("<image>" + exo.getImageexo() + "</image>");
-                            out.println("</exercice>");
+                            String nomE,descE;
+                            byte[] imgE;
+                            try{
+                                Exercice exo = cs.getExercice();
+                                nomE = exo.getNomexo();
+                                descE = exo.getDescriptionexo();
+                                imgE = exo.getImageexo();
+                            }catch(Exception exc){
+                                nomE = "Aucun exercice";
+                                descE = "";
+                                imgE = new byte[0];
+                            }
+                            out.print("<nomExo>" +nomE+ "</nomExo>");
+                            out.print("<description>" + descE + "</description>");
+                            out.print("<image>" + imgE + "</image>");
+                            out.print("</exercice>");
                         }
-                    }else{
-                        out.println("<exercice>");
-                            out.println("<nomExo>Aucun exercice</nomExo>");
-                            out.println("<description></description>");
-                            out.println("<image></image>");
-                            out.println("</exercice>");
-                    }
                     out.println("</seance>");
                 }
-                out.println("</programme>");
+                out.print("</programme>");
             }
         }
     }
