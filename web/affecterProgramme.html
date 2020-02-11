@@ -7,30 +7,42 @@ and open the template in the editor.
 <html>
     <head>
         <title>Affecter un programme</title>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="./JS/fonctions.js"></script>
+        <link rel="stylesheet" type="text/css" href="./CSS/profilClient.css"> 
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div>
-            <table>
-                <tr>
-                    <td>Quel Client </td>
-                    <td><select id="lstClients"></select>
-                        <button class="favorite styled" id ="affectercliquer" type="button">Affecter un programme</button>
-                        <div id="resultat"></div></td>
-                </tr>
-            </table>
+        <div id="affecter">
+            <div>
+                <table>
+                    <tr>
+                        <td>Quel Client </td>
+                        <td><select id="lstClients"></select>
+                            <button class="favorite styled" id ="affectercliquer" type="button">Affecter un programme</button>
+                            <div id="resultat"></div></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="zoneClient"></div>
+            <div>
+                <table>
+                    <tr>
+                        <td>Quel Programme </td>
+                        <td><select id="lstPrgm"></select></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="zonePrgm"></div>
+            <script type="text/javascript" src="affecterProgramme.js"></script>
         </div>
-        <div id="zoneClient"></div>
-        <div>
-            <table>
-                <tr>
-                    <td>Quel Programme </td>
-                    <td><select id="lstPrgm"></select></td>
-                </tr>
-            </table>
-        </div>
-        <div id="zonePrgm"></div>
-        <script type="text/javascript" src="affecterProgramme.js"></script>
+        <footer>
+            <a href ="index.html">Revenir à l'acceuil</a>
+        </footer>
     </body>
 </html>

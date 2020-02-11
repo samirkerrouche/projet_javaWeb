@@ -22,6 +22,7 @@ import Mapping.Seance;
 import hibernate.TestHibernate;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,81 +60,98 @@ public class ServletAffecterProgramme extends HttpServlet {
 
         //Prendre le contenu des seances d un programme standard.
         Programme prog = TestHibernate.getPrgm(nomProg);
-        List<Seance> seances = TestHibernate.getSeances(prog);
-        HashMap<Seance, List<ComposerSeance>> mapSeances = new HashMap<>();
 
-        for (Seance seance : seances) {
-            List<ComposerSeance> exos = new ArrayList<>();
-            try {
-                exos = TestHibernate.getExercices(seance);
-            } catch (Exception e) {
-                e.printStackTrace();
+        if (prog.getIsstandard()) {
+            List<Seance> seances = TestHibernate.getSeances(prog);
+            HashMap<Seance, List<ComposerSeance>> mapSeances = new HashMap<>();
+
+            for (Seance seance : seances) {
+                List<ComposerSeance> exos = new ArrayList<>();
+                try {
+                    exos = TestHibernate.getExercices(seance);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                mapSeances.put(seance, exos);
             }
-            mapSeances.put(seance, exos);
-        }
-        //Reprendre les donnees du client
-        String[] t = nomCli.trim().split("_");
-        nomCli = t[1];
-        String prenomCli = t[0];
-        Client client = TestHibernate.getClient(nomCli, prenomCli);
-        String identiteClient = prenomCli + " " + nomCli;
-        Set x = new HashSet();
-        //System.out.println("TESTVISION");
+            //Reprendre les donnees du client
+            String[] t = nomCli.trim().split("_");
+            nomCli = t[1];
+            String prenomCli = t[0];
+            Client client = TestHibernate.getClient(nomCli, prenomCli);
+            String identiteClient = prenomCli + " " + nomCli;
+            Set x = new HashSet();
+            //System.out.println("TESTVISION");
 
-        //creer un programme avec toutes les donnees
-        Programme progRef = new Programme(nomProg + " de " + identiteClient, Boolean.FALSE, x, x, x);
-        TestHibernate.insertProgram(progRef);
+            //creer un programme avec toutes les donnees
+            Programme progRef = new Programme(nomProg + " de " + identiteClient, Boolean.FALSE, x, x, x);
+            TestHibernate.insertProgram(progRef);
 
-        for (Map.Entry<Seance, List<ComposerSeance>> e : mapSeances.entrySet()) {
+            for (Map.Entry<Seance, List<ComposerSeance>> e : mapSeances.entrySet()) {
 
-            //Creer une nouvelle seance
-            Seance seanceClient;
-            if (e.getKey().getCircuit() == null) {
-                seanceClient = new Seance(null, progRef, e.getKey().getNomseance() + " " + identiteClient, Boolean.FALSE, x, x);
-            } else {
-                seanceClient = new Seance(e.getKey().getCircuit(), progRef, e.getKey().getNomseance() + " " + identiteClient, Boolean.FALSE, x, x);
-            }
-            TestHibernate.insertSeance(seanceClient);
-            List<OccurrenceS> occs = new ArrayList<>();
-            for (int k = 0; k < 4; k++) {
-                Date dateoccs = new Date(2020, 10, 10);
-                OccurrenceS occ = new OccurrenceS(seanceClient, dateoccs, Boolean.FALSE, x, x, x);
-                TestHibernate.insertOccurrenceS(occ);
-                occs.add(occ);
-            }
-            occs = TestHibernate.getOccurr(seanceClient);
-            if (seanceClient.getCircuit() == null) {
-                //Creer des compositions de seances
-                for (OccurrenceS occ : occs) {
+                //Creer une nouvelle seance
+                Seance seanceClient;
+                if (e.getKey().getCircuit() == null) {
+                    seanceClient = new Seance(null, progRef, e.getKey().getNomseance() + " " + identiteClient, Boolean.FALSE, x, x);
+                } else {
+                    seanceClient = new Seance(e.getKey().getCircuit(), progRef, e.getKey().getNomseance() + " " + identiteClient, Boolean.FALSE, x, x);
+                }
+                TestHibernate.insertSeance(seanceClient);
+                List<OccurrenceS> occs = new ArrayList<>();
+                for (int k = 0; k < 4; k++) {
+                    Date dateoccs = new Date(2020, 10, 10);
+                    OccurrenceS occ = new OccurrenceS(seanceClient, dateoccs, Boolean.FALSE, x, x, x);
+                    TestHibernate.insertOccurrenceS(occ);
+                    occs.add(occ);
+                }
+                occs = TestHibernate.getOccurr(seanceClient);
+                if (seanceClient.getCircuit() == null) {
+                    //Creer des compositions de seances
+
                     for (ComposerSeance cs : e.getValue()) {
-                        System.out.println("CODE OCC : " + occ.getCodeoccs());
-                        System.out.println(cs.getExercice().getNomexo());
-                        Exercice exo = cs.getExercice();
-                        System.out.println("NOM DE LEXO : " + exo.getNomexo() + " et son code " + exo.getCodeexo());
+                        cs.getId().getCodeexo();
+                        Exercice exo = TestHibernate.getContent(cs);
+//                        System.out.println("NOM DE LEXO : " + exo.getNomexo() + " et son code " + exo.getCodeexo());
                         ComposerSeanceId id = new ComposerSeanceId(seanceClient.getCodeseance(), exo.getCodeexo());
-
                         ComposerSeance csClient = new ComposerSeance(id, exo, seanceClient, cs.getOrdreexoseance());
                         TestHibernate.insertComposerSeance(csClient);
+                        for (OccurrenceS occ : occs) {
+//                        System.out.println("CODE OCC : " + occ.getCodeoccs());
+                            //Exercice exo = cs.getId();
+                            //Copier les execution exercice
+                            ExecuterExoId curId = new ExecuterExoId(exo.getCodeexo(), client.getCodecli(), occ.getCodeoccs());
+                            ExecuterExo exeExo = new ExecuterExo(curId, client, exo, occ);
+                            TestHibernate.insertExecutionExercice(exeExo);
+                        }
+                    }
 
-                        //Copier les execution exercice
-                        ExecuterExoId curId = new ExecuterExoId(exo.getCodeexo(), client.getCodecli(), occ.getCodeoccs());
-                        ExecuterExo exeExo = new ExecuterExo(curId, client, exo, occ);
-                        TestHibernate.insertExecutionExercice(exeExo);
+                } else {
+                    //QUE UN SEUL !
+                    ExecuterCircuitId idExe;
+                    for (OccurrenceS occ : occs) {
+                        idExe = new ExecuterCircuitId(occ.getCodeoccs(), seanceClient.getCircuit().getCodecir(), client.getCodecli());
+                        ExecuterCircuit exeCir = new ExecuterCircuit(idExe, seanceClient.getCircuit(), client, occ);
+                        TestHibernate.insertExecutionCircuit(exeCir);
                     }
                 }
 
-            } else {
-                //QUE UN SEUL !
-                ExecuterCircuitId idExe;
-                for (OccurrenceS occ : occs) {
-                    idExe = new ExecuterCircuitId(occ.getCodeoccs(), seanceClient.getCircuit().getCodecir(), client.getCodecli());
-                    ExecuterCircuit exeCir = new ExecuterCircuit(idExe, seanceClient.getCircuit(), client, occ);
-                    // TestHibernate.insertExecutionCircuit(exeCir);
-                }
+            }
+            Date date = new Date();
+
+            AffecterId idAff = new AffecterId(progRef.getCodeprog(), client.getCodecli(), date);
+            Affecter affecterP = new Affecter(idAff, client, progRef);
+            TestHibernate.insertAffectation(affecterP);
+        } else { // interdire l affectation
+            try (PrintWriter out = response.getWriter()) {
+                /*----- Ecriture de la page XML -----*/
+                out.println("<?xml version=\"1.0\"?>");
+                out.println("<reponse>");
+                out.println("<erreur>OUI</erreur>");
+                out.println("</reponse>");
+                
             }
 
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

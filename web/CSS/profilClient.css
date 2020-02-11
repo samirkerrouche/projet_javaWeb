@@ -103,3 +103,37 @@ body{
     color: #0062cc;
 }
 
+#affecter{
+    color : white;
+}
+
+#lstClients{
+    color : black;
+}
+
+#lstPrgm{
+    color : black;
+}
+
+#pdp{
+    height: 200px;
+  width: 200px;
+}
+
+#zoneClient {
+  display: flex;
+}
+
+#exo{
+    display : flex;
+}
+
+#affectercliquer{
+    color : black;
+}
+
+footer > a{
+    color : black;
+    background-color: white;
+    text-align: center;
+}
