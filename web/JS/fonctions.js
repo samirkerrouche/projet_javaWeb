@@ -14,9 +14,9 @@
 function AfficherClientSeances(codeProg) {
     // Objet XMLHttpRequest.
     var xhr = new XMLHttpRequest();
-    // Requête au serveur avec les paramètres éventuels. (url mapping utilisé)
     // créer l'url avec les paramètres
     var url = "ServletViewClientSeances" + "?progID=" + codeProg;
+    // Requête au serveur avec les paramètres éventuels. (url mapping utilisé)
     xhr.open("GET", url);
     // On précise ce que l'on va faire quand on aura reçu la réponse du serveur.
     xhr.onload = function ()
@@ -28,13 +28,28 @@ function AfficherClientSeances(codeProg) {
             var elt = document.getElementById("divSeances");
             // doc de la réponse HTML
             var doc = xhr.responseXML;
-            var seances = doc.getElementsByTagName("seance"); // un tableau
+            var noms = doc.getElementsByTagName("nom"); // un tableau
+            var dates = doc.getElementsByTagName("date"); // un tableau
+            var nbTotal = doc.getElementsByTagName("nbTotal"); // un tableau(d'un seul élement)
             var chaine = "";
-            for (var i = 0; i < seances.length; i++) {
+            // boucle on s'arrete à length - 1 pour ne pas faire le dernier élement (car on veut l'afficher avec un style différent(lui donné un id unique).
+            for (var i = 0; i < noms.length - 1; i++) {
+                // j = le compteur 1,2,3... pour l'odre des séances
                 j = i + 1;
-                chaine += "<li>" + j + ". " + seances[i].firstElementChild.innerHTML + "</li>";
+                // faire en sorte d'écrier (exemple : 1. nom de séance : (date de début)) 
+                chaine += "<li> - (" + j + " sur " + nbTotal[0].innerHTML  + ") " + noms[i].innerHTML + " : (" + dates[i].innerHTML + ") </li>";
             }
-            elt.innerHTML = "<ul>" + chaine + "</ul>";
+            // y : c'est l'ordre du dernier élement
+            var y = j + 1;
+            // rajouter la ligne du dernier élement
+            chaine += "<li id='dernier'> - (" + y + " sur " + nbTotal[0].innerHTML  + ") " + noms[j].innerHTML + " : (" + dates[j].innerHTML + ")    </li>";
+            elt.innerHTML = "<br><ul>" + chaine + "</ul>";
+            // récupérer le dernier élément pour modifier son style
+            var eltLi = document.getElementById("dernier");
+            eltLi.style.color = "green";
+            // une fois le bouton afficher est appuyé on lui rend inactif
+            var btnAfficher = document.getElementById("btnViewProgSeances");
+            btnAfficher.disabled = true;
         }
     };
     // Envoie de la requête.
