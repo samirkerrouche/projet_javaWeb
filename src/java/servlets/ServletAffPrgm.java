@@ -6,11 +6,16 @@
 package servlets;
 
 import Mapping.Client;
+import Mapping.ComposerSeance;
+import Mapping.Programme;
+import Mapping.Seance;
 import hibernate.TestHibernate;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author samirkerrouche
  */
-public class ServletVoirClient extends HttpServlet {
+public class ServletAffPrgm extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,50 +40,32 @@ public class ServletVoirClient extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("application/xml;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            out.println("<?xml version=\"1.0\"?>");
-            String nomCli = request.getParameter("nomCli");
-            if (nomCli == null) { // Display all the clients
+        String nomCli = request.getParameter("nomCli");
+        String nomProg = request.getParameter("nomProg");
 
-                List<Client> clients = TestHibernate.getClients();
-                out.println("<clients>");
-                try {
-                    clients.forEach((client) -> {
-                        out.println("<client>" + client.getPrenomcli() + "_" + client.getNomcli() + "</client>");
-                    });
-                } catch (Exception e) {
-                    out.println("<client>erreur -" + e.getMessage()+"</client>");
-                }
-                out.println("</clients>");
+        Programme prog = TestHibernate.getPrgm(nomProg);
 
-            } else { //display datas from specific client
-                String[] t = nomCli.trim().split("_");
-                nomCli = t[1];
-                String prenomCli = t[0];
-                Client client = TestHibernate.getClient(nomCli, prenomCli);
-               
-                out.println("<client>");
-                try {
-                    out.println("<nom>" + nomCli + " "+prenomCli+"</nom>");
-                    out.println("<naissance>" + client.getDatenaisscli() + "</naissance>");
-                    out.println("<taille>" + client.getTaillecli() + "</taille>");
-                    out.println("<poids>" + client.getPoidscli() + "</poids>");
-                    String profil;
-                    if(client.getProfil() == null){
-                        profil = "Sans profil";
-                    }else{
-                        profil = client.getProfil().getNomprof();
-                    }
-                    out.println("<profil>" + profil + "</profil>");
-                    out.println("<photo>" + client.getPhotocli() + "</photo>");
-                } catch (Exception e) {
-                    out.println("<erreur>erreur- " + e.getMessage() + "</erreur>");
-                }
-                out.println("</client>");
+        List<Seance> seances = TestHibernate.getSeances(prog);
 
+        HashMap<Seance, List<ComposerSeance>> mapSeances = new HashMap<>();
+        for (Seance seance : seances) {
+            List<ComposerSeance> exos = null;
+            try {
+                exos = TestHibernate.getExercices(seance);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
+            mapSeances.put(seance, exos);
         }
+
+        String[] t = nomCli.trim().split("_");
+        nomCli = t[1];
+        String prenomCli = t[0];
+        Client client = TestHibernate.getClient(nomCli, prenomCli);
+        String identiteClient = prenomCli+" "+ nomCli;
+        Set x = new HashSet();
+        Programme progRef = new Programme(nomProg + " de "+identiteClient, Boolean.FALSE, x, x,x);
+        TestHibernate.insertProgram(progRef);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

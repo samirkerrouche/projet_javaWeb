@@ -2,11 +2,14 @@
 
 //Permet d'affecter des listener à tous les composants.
 document.addEventListener("DOMContentLoaded", () => {
-    displayProfiles();
-    displayProgrammes();
     document.getElementById("lstPrgm").addEventListener("change", giveDataPrgm);
     document.getElementById("lstClients").addEventListener("change", giveDataClient);
+    document.getElementById("affectercliquer").addEventListener("click", affecterPrgm);
+    displayProfiles();
+    displayProgrammes();
+
 });
+
 
 /***
  * Sort les programmes de la base de données.
@@ -128,26 +131,17 @@ function giveDataPrgm() {
     xhr.send();
 }
 
-function getProfile() {
-    var nomCli = document.getElementById("lstClient").value;
-    var xhr;
-    xhr.open("", "GET");
-}
-
-function getImage(data) {
-
-// Convert the string to bytes
-    var bytes = new Uint8Array(data.length / 2);
-
-    for (var i = 0; i < data.length; i += 2) {
-        bytes[i / 2] = parseInt(data.substring(i, i + 2), /* base = */ 16);
-    }
-
-// Make a Blob from the bytes
-    var blob = new Blob([bytes], {type: 'image/bmp'});
-
-// Use createObjectURL to make a URL for the blob
-    var image = new Image();
-    image.src = URL.createObjectURL(blob);
-    return image;
+function affecterPrgm() {
+    var nomclient = document.getElementById("lstClients").value;
+    var nomPrgm = document.getElementById("lstPrgm").value;
+    alert(nomclient + " et le programme " + nomPrgm);
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "ServletAffecterProgramme?nomCli=" + nomclient + "&nomProg=" + nomPrgm);
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            var resultat = document.getElementById("resultat");
+            resultat.innerHTML = "Le programme a été affecté";
+        }
+    };
+    xhr.send();
 }

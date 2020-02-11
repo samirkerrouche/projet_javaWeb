@@ -2,6 +2,10 @@ package Mapping;
 // Generated 8 févr. 2020 15:26:40 by Hibernate Tools 4.3.1
 
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -28,7 +32,7 @@ public class Client  implements java.io.Serializable {
      private String commadmincli;
      private String statutcli;
      private Character sexecli;
-     private byte[] photocli;
+     private String photocli;
      private Set executerCircuits = new HashSet(0);
      private Set affecters = new HashSet(0);
      private Set evaluers = new HashSet(0);
@@ -37,7 +41,7 @@ public class Client  implements java.io.Serializable {
     public Client() {
     }
 
-    public Client(Profil profil, User user, String nomcli, String prenomcli, Date datenaisscli, String taillecli, String poidscli, String mailcli, String telcli, Date dateinscriptioncli, String commadmincli, String statutcli, Character sexecli, byte[] photocli, Set executerCircuits, Set affecters, Set evaluers, Set executerExos) {
+    public Client(Profil profil, User user, String nomcli, String prenomcli, Date datenaisscli, String taillecli, String poidscli, String mailcli, String telcli, Date dateinscriptioncli, String commadmincli, String statutcli, Character sexecli, String photocli, Set executerCircuits, Set affecters, Set evaluers, Set executerExos) {
        this.profil = profil;
        this.user = user;
        this.nomcli = nomcli;
@@ -156,11 +160,11 @@ public class Client  implements java.io.Serializable {
     public void setSexecli(Character sexecli) {
         this.sexecli = sexecli;
     }
-    public byte[] getPhotocli() {
+    public String getPhotocli() {
         return this.photocli;
     }
     
-    public void setPhotocli(byte[] photocli) {
+    public void setPhotocli(String photocli) {
         this.photocli = photocli;
     }
     public Set getExecuterCircuits() {
@@ -223,7 +227,15 @@ public class Client  implements java.io.Serializable {
     }
 
   
+    public int getAgeClient() {
+        LocalDate now = LocalDate.now();
+        Date dateNaissance = getDatenaisscli();
+        LocalDate dateNaissanceLD = Instant.ofEpochMilli(dateNaissance.getTime())
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
 
+        return Period.between(dateNaissanceLD, now).getYears();
+    }
 
  
 }

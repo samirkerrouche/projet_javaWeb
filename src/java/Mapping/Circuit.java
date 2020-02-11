@@ -83,11 +83,15 @@ public class Circuit  implements java.io.Serializable {
             return false;
         }
         final Circuit other = (Circuit) obj;
+        if (!Objects.equals(this.nomcir, other.nomcir)) {
+            return false;
+        }
         if (!Objects.equals(this.codecir, other.codecir)) {
             return false;
         }
         return true;
     }
+
 
     @Override
     public String toString() {

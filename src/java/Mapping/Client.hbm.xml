@@ -47,8 +47,8 @@
         <property name="sexecli" type="java.lang.Character">
             <column name="SEXECLI" length="1" />
         </property>
-        <property name="photocli" type="binary">
-            <column name="PHOTOCLI" />
+        <property name="photocli" type="string">
+            <column name="PHOTOCLI" length="1000" />
         </property>
         <set name="executerCircuits" table="EXECUTER_CIRCUIT" inverse="true" lazy="true" fetch="select">
             <key>

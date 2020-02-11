@@ -11,8 +11,8 @@
         <property name="nomexo" type="string">
             <column name="NOMEXO" length="32" />
         </property>
-        <property name="imageexo" type="binary">
-            <column name="IMAGEEXO" />
+        <property name="imageexo" type="string">
+            <column name="IMAGEEXO" length="1000" />
         </property>
         <property name="descriptionexo" type="string">
             <column name="DESCRIPTIONEXO" length="600" />

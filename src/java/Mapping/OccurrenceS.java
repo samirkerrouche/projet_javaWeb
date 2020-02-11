@@ -109,8 +109,16 @@ public class OccurrenceS  implements java.io.Serializable {
         if (!Objects.equals(this.codeoccs, other.codeoccs)) {
             return false;
         }
+        if (!Objects.equals(this.dateoccs, other.dateoccs)) {
+            return false;
+        }
+        if (!Objects.equals(this.isvalid, other.isvalid)) {
+            return false;
+        }
         return true;
     }
+
+    
 
     @Override
     public String toString() {

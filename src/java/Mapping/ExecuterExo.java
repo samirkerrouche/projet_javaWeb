@@ -151,6 +151,8 @@ public class ExecuterExo  implements java.io.Serializable {
     public boolean equals(Object obj) {
         return super.equals(obj); //To change body of generated methods, choose Tools | Templates.
     }
+   
+
 
 }
 

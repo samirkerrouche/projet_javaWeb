@@ -18,7 +18,7 @@
         <many-to-one name="client" class="Mapping.Client" update="false" insert="false" fetch="select">
             <column name="CODECLI" not-null="true" />
         </many-to-one>
-        <many-to-one name="programme" class="Mapping.Programme" update="false" insert="false" fetch="select">
+        <many-to-one  name="programme" class="Mapping.Programme" update="false" insert="false" fetch="select">
             <column name="CODEPROG" not-null="true" />
         </many-to-one>
         <property name="datefinaff" type="timestamp">

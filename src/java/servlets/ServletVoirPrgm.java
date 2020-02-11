@@ -91,7 +91,7 @@ public class ServletVoirPrgm extends HttpServlet {
                         for (ComposerSeance cs : e.getValue()) {
                             out.println("<exercice>");
                             String nomE,descE;
-                            byte[] imgE;
+                            String imgE;
                             try{
                                 Exercice exo = cs.getExercice();
                                 nomE = exo.getNomexo();
@@ -100,7 +100,7 @@ public class ServletVoirPrgm extends HttpServlet {
                             }catch(Exception exc){
                                 nomE = "Aucun exercice";
                                 descE = "";
-                                imgE = new byte[0];
+                                imgE = "";
                             }
                             out.print("<nomExo>" +nomE+ "</nomExo>");
                             out.print("<description>" + descE + "</description>");
