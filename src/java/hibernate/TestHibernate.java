@@ -40,8 +40,8 @@ public class TestHibernate {
 
 
         Programme pTest = new Programme("TestdeGetCode", Boolean.FALSE, null, null, null);
-        insertProgram(pTest);
-        System.out.println(pTest.getCodeprog());
+        //insertProgram(pTest);
+        System.out.println(getProgrammes());
     }
 
     /***
@@ -56,7 +56,7 @@ public class TestHibernate {
         } catch (Exception e) {
             t = session.getTransaction();
         }
-        String hql = "from Programme";
+        String hql = "from Programme where ";
         Query q = session.createQuery(hql);
         ArrayList<Programme> programmes = (ArrayList<Programme>) q.list();
         //t.commit();
