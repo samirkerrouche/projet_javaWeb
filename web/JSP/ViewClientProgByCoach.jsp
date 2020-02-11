@@ -11,8 +11,12 @@
 <!DOCTYPE html>
 <html>
     <%
+        // récupérer les infos dateAff et statuAff de la table AFFECTER depuis la servlet
+        String dateAff = (String) request.getAttribute("dateAff");
+        String statutAff = (String) request.getAttribute("statutAff");
         // récupérer l'objet client envoyer depuis la servlet
         Client client = (Client) request.getAttribute("client");
+        // à partir de cet objet Client on crée des variables pour les affecter aux champs JSP dans l'HTML
         String nom = client.getNomcli();
         String prenom = client.getPrenomcli();
         String tel = client.getTelcli();
@@ -26,19 +30,15 @@
         String photo = client.getPhotocli();
         // récupérer l'objet programme envoyer depuis la servlet
         Programme programme = (Programme) request.getAttribute("programme");
+        // à partir de cet objet Programme on crée des variables
         int codeProg = programme.getCodeprog();
         String nomProg = programme.getNomprog();
-        // récupérer les autres infos de la table AFFECTER depuis la servlet
-        String dateAff = (String) request.getAttribute("dateAff");
-        String statutAff = (String) request.getAttribute("statutAff");
     %>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
         <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="./JS/fonctions.js"></script>
         <link rel="stylesheet" type="text/css" href="./CSS/profilClient.css">        
@@ -145,9 +145,9 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <label>Séances</label><br/>
-                                        <p>Voir les séances du programme</p>
-                                        <input type="button" class="profile-edit-btn" id="btnViewProgSeances" value="Afficher les séances" onclick="AfficherClientSeances(<%= codeProg%>);"/>
+                                        <input type="button" id="btnViewProgSeances" value="Afficher les séances" onclick="AfficherClientSeances(<%= codeProg%>);"/>
                                     </div>
+                                    <br>
                                     <div id="divSeances">
                                     </div>
                                 </div>

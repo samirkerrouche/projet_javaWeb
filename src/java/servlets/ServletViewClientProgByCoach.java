@@ -47,8 +47,9 @@ public class ServletViewClientProgByCoach extends HttpServlet {
             /*----- Ouverture de la session et de la transaction -----*/
             Session session = HibernateUtil.getSessionFactory().getCurrentSession();
             Transaction t = session.beginTransaction();
+            // chargement de l'objet Client correspondant à l'id passé
             Client client = (Client) session.get(Client.class, id);
-            // todo : regrouper dans une seule requete et trouver un moyen de comment accèder aux différents champs
+            // Les requetes SQL native
             List resultatCodeProg = session.createSQLQuery("SELECT aff.CODEPROG "
                     + "FROM AFFECTER aff "
                     + "WHERE aff.CODECLI = " + client.getCodecli() + " "
@@ -68,26 +69,30 @@ public class ServletViewClientProgByCoach extends HttpServlet {
                     + "AND aff.DATEFINAFF IS NULL "
                     + "AND aff.STATUTAFF = 'en cours'").list();
             // récupération des résultats
+            // depuis la requete 1
             int programmeId = (int) resultatCodeProg.get(0);
+            // depuis la requete 2
             String statutAff = (String) resultatStatutAff.get(0);
+            // depuis la requete 3
             Timestamp dateAff = (Timestamp) resultatDateAff.get(0);
-            // charger l'objet programme
+            // charger l'objet programme à l'aide de son id obtenu
             Programme programme = (Programme) session.get(Programme.class, programmeId);
-            // retourner à la page du ViewListeClientByCoach
+            // préaprer le Request Dispatcher pour retourner à la page du ViewListeClientByCoach
             RequestDispatcher rd = request.getRequestDispatcher("ViewClientProgByCoach");
-            // set l'objet client pour le passer à la page suivante
+            // set l'objet client pour le passer à la page suivante (ViewListeClientByCoach)
             request.setAttribute("client", client);
-            // set l'objet programme pour le passer la page suivante
+            // set l'objet programme pour le passer la page suivante (ViewListeClientByCoach)
             request.setAttribute("programme", programme);
-            // set les autres informations pour la page suivante
+            // set les autres informations pour la page suivante (ViewListeClientByCoach)
             request.setAttribute("dateAff", dateAff.toString());
             request.setAttribute("statutAff", statutAff);
             // aller vers la page de ViewClientProgByCoach
             rd.forward(request, response);
             // ferméture de la session et commit la transaction
-           t.commit();
-           // session.close();
+            t.commit();
+            //session.close();
         } catch (Exception ex) {
+            // en cas d'erreur
             // retour sur la page d'avant avec un message d'erreur
             RequestDispatcher rd = request.getRequestDispatcher("ViewListeClientByCoach");
             // rajouter un attribut message

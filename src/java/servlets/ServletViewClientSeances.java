@@ -5,7 +5,7 @@
  */
 package servlets;
 
-import Mapping.Seance;
+import Mapping.OccurrenceS;
 import hibernate.HibernateUtil;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -40,23 +39,34 @@ public class ServletViewClientSeances extends HttpServlet {
             /*----- Ouverture de la session et de la transaction -----*/
             Session session = HibernateUtil.getSessionFactory().getCurrentSession();
             Transaction t = session.beginTransaction();
-            // la requete SQL Native
-            Query q = session.createSQLQuery("SELECT * FROM SEANCE WHERE CODEPROG = " + progID).addEntity(Seance.class);
-            // Query q = session.createSQLQuery("SELECT * FROM SEANCE WHERE CODEPROG = " + progID + " ORDER BY ORDERSEANCE ASC).addEntity(Seance.class);
-            // récupérer les résultats en objet de classe Seance
-            List<Seance> seances = q.list();
-            // l'écriture de chaque séance dans notre XML
-            for (Seance s : seances) {
+            // la requete SQL native pour avoir le nombre de séance(occurrence) d'un le programme donnée
+            Query nbOccs = session.createSQLQuery("SELECT COUNT(*) "
+                    + "FROM OCCURRENCE_S "
+                    + "WHERE CODESEANCE IN (SELECT CODESEANCE FROM SEANCE WHERE CODEPROG = " + progID + ")");
+            List nbtotal = nbOccs.list();
+            if (nbtotal.size() > 0) {
+                out.println("<nbTotal>" + nbtotal.get(0) + "</nbTotal>");
+            }
+            // la requete SQL native qui récupére les occurences/séances du programme donné qui sont passées ou en cours 
+            Query qoccs = session.createSQLQuery("SELECT * "
+                    + "FROM OCCURRENCE_S "
+                    + "WHERE DATEOCCS <= SYSDATE() "
+                    + "AND CODESEANCE IN (SELECT CODESEANCE FROM SEANCE WHERE CODEPROG = " + progID + ") "
+                    + "ORDER BY DATEOCCS ASC").addEntity(OccurrenceS.class);
+            // récupérer les résultats en objet de classe OccurenceS
+            List<OccurrenceS> occs = qoccs.list();
+            // parcourir la liste des objets récupérée
+            for (OccurrenceS occ : occs) {
                 out.println("<seance>");
-                //out.println("<nom>" + seances.get(0).getNomseance() + "</nom>");
-                out.println("<nom>" + s.getNomseance() + "</nom>");
-//                out.println("<bilan>" + s.getIsbilan() + "</bilan>");
+                // remplir le nom de la séance correspondant à l'occurence
+                out.println("<nom>" + occ.getSeance().getNomseance() + "</nom>");
+                // remplir la date de l'occurence
+                out.println("<date>" + occ.getDateoccs() + "</date>");
                 out.println("</seance>");
             }
-
             out.println("</seances>");
             t.commit();
-            session.close();
+            //session.close();
         }
     }
 
