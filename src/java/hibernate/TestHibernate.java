@@ -38,14 +38,16 @@ public class TestHibernate {
      */
     public static void main(String[] args) {
 
-
-        Programme pTest = new Programme("TestdeGetCode", Boolean.FALSE, null, null, null);
+        Programme pTest = new Programme("TestdeGetCode", Boolean.FALSE, null, null, null, null);
         //insertProgram(pTest);
         System.out.println(getProgrammes());
     }
 
-    /***
-     * 
+    /**
+     * *
+     * Le nom du client doit etre de la forme : prenom_nom
+     *
+     * @param nomCli
      * @return Les programmes sans triage.
      */
     public static List<Programme> getProgrammes() {
@@ -56,11 +58,46 @@ public class TestHibernate {
         } catch (Exception e) {
             t = session.getTransaction();
         }
-        String hql = "from Programme where ";
+        String hql;
+        ArrayList<Programme> programmes = new ArrayList<>();
+        hql = "from Programme";
         Query q = session.createQuery(hql);
-        ArrayList<Programme> programmes = (ArrayList<Programme>) q.list();
-        //t.commit();
-        //session.close();
+        programmes = (ArrayList<Programme>) q.list();
+        return programmes;
+    }
+
+    /**
+     * *
+     *
+     * @param nomCli
+     * @return les programmes tries selon un Client
+     */
+    public static List<Programme> sortPrograms(Client client) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction t;
+        try {
+            t = session.beginTransaction();
+        } catch (Exception e) {
+            t = session.getTransaction();
+        }
+        String hql;
+        List<Programme> programmes = new ArrayList<>();
+        System.out.println(client.getNomcli());
+        Query q;
+        if (client.getProfil().getCodeprof() != null) {
+            hql = "from Programme as p where p.profil.codeprof =" + client.getProfil().getCodeprof();
+            q = session.createQuery(hql);
+            programmes = (ArrayList<Programme>) q.list();
+        }
+        hql = "from Programme";
+        q = session.createQuery(hql);
+        List<Programme> prgmSansProfil = (List<Programme>) q.list();
+        for (Programme prgm : prgmSansProfil) {
+            if (!programmes.contains(prgm)) {
+                programmes.add(prgm);
+            }
+        }
+        System.out.println(programmes.size());
         return programmes;
     }
 
@@ -158,9 +195,10 @@ public class TestHibernate {
         return comCir;
     }
 
-    /***
-     * 
-     * @return 
+    /**
+     * *
+     *
+     * @return
      */
     public static List<Client> getClients() {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -180,14 +218,14 @@ public class TestHibernate {
         // t.commit();
         //session.close();
         List<Client> renvoi = new ArrayList<>();
-        String hql1="from Client as c where c.codecli not in"
+        String hql1 = "from Client as c where c.codecli not in"
                 + " (select a.client.codecli "
                 + "from Affecter as a) "
                 + "order by c.dateinscriptioncli asc";
         Query q = session.createQuery(hql1);
         List<Client> clients = (List<Client>) q.list();
-        
-        String hql2=" from Client as c where c.codecli in "
+
+        String hql2 = " from Client as c where c.codecli in "
                 + "( select a.client.codecli from Affecter as a WHERE a.datefinaff "
                 + "is not null and a.id.dateaff in (select max(ar.id.dateaff)"
                 + "FROM Affecter as ar WHERE ar.programme.codeprog in "
@@ -195,17 +233,15 @@ public class TestHibernate {
                 + "ORDER by a.id.dateaff ASC)";
         Query l = session.createQuery(hql2);
         List<Client> clientes = (List<Client>) l.list();
-        for(Client cl : clients){
+        for (Client cl : clients) {
             renvoi.add(cl);
         }
-        for(Client cl : clientes){
-            if(!renvoi.contains(cl)) {
+        for (Client cl : clientes) {
+            if (!renvoi.contains(cl)) {
                 renvoi.add(cl);
             }
         }
-        
-        
-        
+
         return renvoi;
     }
 
@@ -231,10 +267,11 @@ public class TestHibernate {
         return client;
     }
 
-
-    /***
+    /**
+     * *
      * insere des donnees dans la table programme.
-     * @param programme 
+     *
+     * @param programme
      */
     public static void insertProgram(Programme programme) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -252,6 +289,7 @@ public class TestHibernate {
     /**
      * *
      * Cree des occurrences pour pouvoir les manipuler et les sauver.
+     *
      * @param seance
      * @return une liste d'occurence
      */
@@ -271,13 +309,15 @@ public class TestHibernate {
         return lst;
 
     }
-    
-    /***
+
+    /**
+     * *
      * Donne les occurrences selon une seance
+     *
      * @param seance
-     * @return 
+     * @return
      */
-    public static List<OccurrenceS> getOccurr(Seance seance){
+    public static List<OccurrenceS> getOccurr(Seance seance) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction t;
         try {
@@ -285,16 +325,17 @@ public class TestHibernate {
         } catch (Exception e) {
             t = session.getTransaction();
         }
-        String hql = "from OccurrenceS where codeseance ="+seance.getCodeseance();
+        String hql = "from OccurrenceS where codeseance =" + seance.getCodeseance();
         Query q = session.createQuery(hql);
-        List<OccurrenceS> occs = (List<OccurrenceS>)q.list();
+        List<OccurrenceS> occs = (List<OccurrenceS>) q.list();
         return occs;
     }
 
     /**
      * *
-     * Donne l executer exo selon une occurrence, un client et un exo.
-     * En cree une nouvelle.
+     * Donne l executer exo selon une occurrence, un client et un exo. En cree
+     * une nouvelle.
+     *
      * @param occ
      * @param client
      * @param exo
@@ -306,11 +347,11 @@ public class TestHibernate {
         return execute;
     }
 
-   
-
-    /***
+    /**
+     * *
      * Insere une seule seance
-     * @param seance 
+     *
+     * @param seance
      */
     public static void insertSeance(Seance seance) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -325,9 +366,11 @@ public class TestHibernate {
 
     }
 
-    /***
+    /**
+     * *
      * Insere une liste de seances
-     * @param seances 
+     *
+     * @param seances
      */
     public static void insertSeances(List<Seance> seances) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -345,9 +388,11 @@ public class TestHibernate {
 
     }
 
-    /***
+    /**
+     * *
      * Insere une seule occurrence de seance
-     * @param oc 
+     *
+     * @param oc
      */
     public static void insertOccurrenceS(OccurrenceS oc) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -362,9 +407,11 @@ public class TestHibernate {
 
     }
 
-    /***
+    /**
+     * *
      * Insere une liste d occurrence de seance.
-     * @param ocs 
+     *
+     * @param ocs
      */
     public static void insertOccurrencesS(List<OccurrenceS> ocs) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -382,8 +429,9 @@ public class TestHibernate {
 
     }
 
-    /***
-     * 
+    /**
+     * *
+     *
      * @param nomExo
      * @return l exercice selon un nom.
      */
@@ -438,9 +486,11 @@ public class TestHibernate {
         t.commit();
     }
 
-    /***
+    /**
+     * *
      * Insere une composition de seance
-     * @param compS 
+     *
+     * @param compS
      */
     public static void insertComposerSeance(ComposerSeance compS) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -454,53 +504,60 @@ public class TestHibernate {
         t.commit();
     }
 
-    /***
-     * 
+    /**
+     * *
+     *
      * @param circuit
      * @return tous les exercices qui composent le circuit mentionne.
      */
-    public static List<ComposerCircuit> getComposerCircuit(Circuit circuit){
+    public static List<ComposerCircuit> getComposerCircuit(Circuit circuit) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction t;
         try {
             t = session.beginTransaction();
         } catch (Exception e) {
-            t = session.getTransaction();           
+            t = session.getTransaction();
         }
-        String hql = "from ComposerCircuit where circuit.codecir="+circuit.getCodecir() ;
+        String hql = "from ComposerCircuit where circuit.codecir=" + circuit.getCodecir();
         Query q = session.createQuery(hql);
         List<ComposerCircuit> cc = (List<ComposerCircuit>) q.list();
         return cc;
-    } 
-    
-    /***
-     * On ne peut pas instancier les objets exercice et Seance d un composer seance.
+    }
+
+    /**
+     * *
+     * On ne peut pas instancier les objets exercice et Seance d un composer
+     * seance.
+     *
      * @param cs
-     * @return Le contenu d un exercice en utilisant l id(le seul attribut instancie).
+     * @return Le contenu d un exercice en utilisant l id(le seul attribut
+     * instancie).
      */
-    public static Exercice getContent(ComposerSeance cs){
+    public static Exercice getContent(ComposerSeance cs) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction t;
         try {
             t = session.beginTransaction();
         } catch (Exception e) {
-            t = session.getTransaction();           
+            t = session.getTransaction();
         }
         String hql = "from Exercice as e where e.codeexo ="
                 + "(select cs.id.codeexo from ComposerSeance as cs "
-                + "where cs.id.codeexo="+cs.getId().getCodeexo()+" and cs.id.codeseance="+cs.getId().getCodeseance()+")";
+                + "where cs.id.codeexo=" + cs.getId().getCodeexo() + " and cs.id.codeseance=" + cs.getId().getCodeseance() + ")";
         Query q = session.createQuery(hql);
         Exercice exo = (Exercice) q.list().get(0);
 //        t.commit();
         return exo;
     }
-    
-    /***
-     * Finalise l affectation en entrant une affectation entre un client et un programme complet.
-     * A faire a la fin de la creation d un programme.
-     * @param affecter 
+
+    /**
+     * *
+     * Finalise l affectation en entrant une affectation entre un client et un
+     * programme complet. A faire a la fin de la creation d un programme.
+     *
+     * @param affecter
      */
-    public static void insertAffectation(Affecter affecter){
+    public static void insertAffectation(Affecter affecter) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction t;
         try {

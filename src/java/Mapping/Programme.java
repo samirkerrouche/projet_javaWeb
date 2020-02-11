@@ -16,6 +16,7 @@ public class Programme  implements java.io.Serializable {
      private Integer codeprog;
      private String nomprog;
      private Boolean isstandard;
+     private Profil profil;
      private Set profils = new HashSet(0);
      private Set affecters = new HashSet(0);
      private Set seances = new HashSet(0);
@@ -23,9 +24,10 @@ public class Programme  implements java.io.Serializable {
     public Programme() {
     }
 
-    public Programme(String nomprog, Boolean isstandard, Set profils, Set affecters, Set seances) {
+    public Programme(String nomprog, Boolean isstandard,Profil profil, Set profils, Set affecters, Set seances) {
        this.nomprog = nomprog;
        this.isstandard = isstandard;
+       this.profil=profil;
        this.profils = profils;
        this.affecters = affecters;
        this.seances = seances;
@@ -97,6 +99,14 @@ public class Programme  implements java.io.Serializable {
             return false;
         }
         return true;
+    }
+
+    public Profil getProfil() {
+        return profil;
+    }
+
+    public void setProfil(Profil profil) {
+        this.profil = profil;
     }
 
     @Override

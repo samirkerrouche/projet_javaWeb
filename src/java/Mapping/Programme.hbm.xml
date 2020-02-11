@@ -19,7 +19,7 @@
                 <column name="CODEPROG" not-null="true" />
             </key>
             <many-to-many entity-name="Mapping.Profil">
-                <column name="CODEPROF" not-null="true" />
+                <column name="CODEPROF" not-null="false" />
             </many-to-many>
         </set>
         <set name="affecters" table="AFFECTER" inverse="true" lazy="true" fetch="select">

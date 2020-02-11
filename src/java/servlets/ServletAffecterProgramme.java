@@ -84,7 +84,7 @@ public class ServletAffecterProgramme extends HttpServlet {
             //System.out.println("TESTVISION");
 
             //creer un programme avec toutes les donnees
-            Programme progRef = new Programme(nomProg + " de " + identiteClient, Boolean.FALSE, x, x, x);
+            Programme progRef = new Programme(nomProg + " de " + identiteClient, Boolean.FALSE,null, x, x, x);
             TestHibernate.insertProgram(progRef);
 
             for (Map.Entry<Seance, List<ComposerSeance>> e : mapSeances.entrySet()) {
