@@ -84,7 +84,7 @@ public class ServletAffecterProgramme extends HttpServlet {
             //System.out.println("TESTVISION");
 
             //creer un programme avec toutes les donnees
-            Programme progRef = new Programme(nomProg + " de " + identiteClient, Boolean.FALSE,null, x, x, x);
+            Programme progRef = new Programme(nomProg + " de " + identiteClient, Boolean.FALSE, null, x, x, x);
             TestHibernate.insertProgram(progRef);
 
             for (Map.Entry<Seance, List<ComposerSeance>> e : mapSeances.entrySet()) {
@@ -92,9 +92,9 @@ public class ServletAffecterProgramme extends HttpServlet {
                 //Creer une nouvelle seance
                 Seance seanceClient;
                 if (e.getKey().getCircuit() == null) {
-                    seanceClient = new Seance(null, progRef, e.getKey().getNomseance() + " " + identiteClient, Boolean.FALSE, x, x);
+                    seanceClient = new Seance(null, progRef, e.getKey().getNomseance() + " " + identiteClient, null, null, null, null, null, Boolean.FALSE, x, x);
                 } else {
-                    seanceClient = new Seance(e.getKey().getCircuit(), progRef, e.getKey().getNomseance() + " " + identiteClient, Boolean.FALSE, x, x);
+                    seanceClient = new Seance(e.getKey().getCircuit(), progRef, e.getKey().getNomseance() + " " + identiteClient, null, null, null, null, null, Boolean.FALSE, x, x);
                 }
                 TestHibernate.insertSeance(seanceClient);
                 List<OccurrenceS> occs = new ArrayList<>();
@@ -147,7 +147,7 @@ public class ServletAffecterProgramme extends HttpServlet {
                 out.println("<reponse>");
                 out.println("<erreur>NON</erreur>");
                 out.println("</reponse>");
-                
+
             }
         } else { // interdire l affectation
             try (PrintWriter out = response.getWriter()) {
@@ -156,7 +156,7 @@ public class ServletAffecterProgramme extends HttpServlet {
                 out.println("<reponse>");
                 out.println("<erreur>OUI</erreur>");
                 out.println("</reponse>");
-                
+
             }
 
         }

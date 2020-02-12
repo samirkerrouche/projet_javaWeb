@@ -74,7 +74,7 @@ public class ServletEnvoyerNotif extends HttpServlet {
             NotifierId ni = new NotifierId(idCoach, idClient, date);
             User client = (User) session.get(User.class, idClient);
             User coach = (User) session.get(User.class, idCoach);
-            Notifier n = new Notifier(ni, coach, client, txtEnvoyer);
+            Notifier n = new Notifier(ni, coach, client, txtEnvoyer, Boolean.FALSE);
             //t.commit();
 
             Client clientMail = (Client) session.get(Client.class, idClient);
