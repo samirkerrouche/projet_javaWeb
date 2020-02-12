@@ -64,7 +64,7 @@ public class ServletAffPrgm extends HttpServlet {
         Client client = TestHibernate.getClient(nomCli, prenomCli);
         String identiteClient = prenomCli+" "+ nomCli;
         Set x = new HashSet();
-        Programme progRef = new Programme(nomProg + " de "+identiteClient, Boolean.FALSE, x, x,x);
+        Programme progRef = new Programme(nomProg + " de "+identiteClient, Boolean.FALSE,null, x, x,x);
         TestHibernate.insertProgram(progRef);
     }
 

@@ -6,9 +6,11 @@
 package servlets;
 
 import Mapping.Circuit;
+import Mapping.Client;
 import Mapping.ComposerCircuit;
 import Mapping.ComposerSeance;
 import Mapping.Exercice;
+import Mapping.Profil;
 import hibernate.TestHibernate;
 import Mapping.Programme;
 import Mapping.Seance;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -47,13 +50,34 @@ public class ServletVoirPrgm extends HttpServlet {
             /*----- Ecriture de la page XML -----*/
 
             String nomProg = request.getParameter("nomPrgm");
-
+            String nomCli = request.getParameter("nomCli");
             if (nomProg == null) {
                 //On demande tous les programmes.
                 List<Programme> programmes;
                 out.println("<?xml version=\"1.0\"?>");
                 try {
-                    programmes = TestHibernate.getProgrammes();
+                    if (nomCli == null) {
+                        programmes = TestHibernate.getProgrammes();
+                    } else {
+                        String[] t = nomCli.split("_");
+                        nomCli = t[1];
+                        String prenomCli = t[0];
+                        ArrayList<Programme> prgms = new ArrayList<>();
+                        Client client = TestHibernate.getClient(nomCli, prenomCli);
+                        programmes = TestHibernate.getProgrammes();
+                        for (Programme prgm : programmes) {
+                            Set<Profil> profilP = (Set<Profil>) prgm.getProfils();
+                            if (profilP.contains(client.getProfil())) {
+                                prgms.add(prgm);
+                            }
+                        }
+                        for (Programme prgm : programmes) {
+                            if (!prgms.contains(prgm)) {
+                                prgms.add(prgm);
+                            }
+                        }
+                        programmes = (List<Programme>) prgms.clone();
+                    }
 
                     out.println("<programmes>");
                     programmes.forEach((prgm) -> {
@@ -84,45 +108,50 @@ public class ServletVoirPrgm extends HttpServlet {
                 out.println("<?xml version=\"1.0\"?>");
                 out.println("<programme>");
                 out.println("<nbSeances>" + mapSeances.size() + "</nbSeances>");
+                for (Object profil : prgm.getProfils()) {
+                    Profil pro = (Profil) profil;
+                    out.println("<profil>" + pro.getNomprof() + "</profil>");
+                }
+
                 for (Map.Entry<Seance, List<ComposerSeance>> e : mapSeances.entrySet()) {
-                   
-                    if(e.getKey().getCircuit() == null){
-                         out.print("<seance>"+e.getKey().getNomseance());
+
+                    if (e.getKey().getCircuit() == null) {
+                        out.print("<seance>" + e.getKey().getNomseance());
                         for (ComposerSeance cs : e.getValue()) {
                             out.println("<exercice>");
-                            String nomE,descE;
+                            String nomE, descE;
                             String imgE;
-                            try{
+                            try {
                                 Exercice exo = cs.getExercice();
                                 nomE = exo.getNomexo();
                                 descE = exo.getDescriptionexo();
                                 imgE = exo.getImageexo();
-                            }catch(Exception exc){
+                            } catch (Exception exc) {
                                 nomE = "Aucun exercice";
                                 descE = "";
                                 imgE = "";
                             }
-                            out.print("<nomExo>" +nomE+ "</nomExo>");
+                            out.print("<nomExo>" + nomE + "</nomExo>");
                             out.print("<description>" + descE + "</description>");
                             out.print("<image>" + imgE + "</image>");
                             out.println("</exercice>");
                         }
                         out.println("</seance>");
-                    }else{ //C'est une seance a circuit.
+                    } else { //C'est une seance a circuit.
                         Circuit circuit = e.getKey().getCircuit();
-                         out.println("<seance>(EN CIRCUIT)"+circuit.getNomcir());
+                        out.println("<seance>(EN CIRCUIT)" + circuit.getNomcir());
                         List<ComposerCircuit> compCir = TestHibernate.getExoFromCircuit(circuit);
-                        for(ComposerCircuit cc : compCir){
+                        for (ComposerCircuit cc : compCir) {
                             Exercice exo = cc.getExercice();
                             out.print("<exercice>");
-                            out.print("<nomExo>" +exo.getNomexo()+ "</nomExo>");
+                            out.print("<nomExo>" + exo.getNomexo() + "</nomExo>");
                             out.print("<description>" + exo.getDescriptionexo() + "</description>");
                             out.print("<image>" + exo.getImageexo() + "</image>");
                             out.println("</exercice>");
                         }
                         out.println("</seance>");
                     }
-                    
+
                 }
                 out.print("</programme>");
             }
