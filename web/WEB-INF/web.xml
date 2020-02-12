@@ -1,32 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
-        <servlet-name>ServletDisplayPrgm</servlet-name>
-        <servlet-class>servlets.ServletDisplayPrgm</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ServletVoirPrgm</servlet-name>
-        <servlet-class>servlets.ServletVoirPrgm</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ServletAffecterProgramme</servlet-name>
-        <servlet-class>servlets.ServletAffecterProgramme</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ServletVoirClient</servlet-name>
-        <servlet-class>servlets.ServletVoirClient</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ServletAffPrgm</servlet-name>
         <servlet-class>servlets.ServletAffPrgm</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ServletViewClientProgByCoach</servlet-name>
-        <servlet-class>servlets.ServletViewClientProgByCoach</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ServletViewClientSeances</servlet-name>
-        <servlet-class>servlets.ServletViewClientSeances</servlet-class>
+        <servlet-name>ServletAffecterProgramme</servlet-name>
+        <servlet-class>servlets.ServletAffecterProgramme</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ServletAfficherBilan</servlet-name>
@@ -37,36 +17,48 @@
         <servlet-class>servlets.ServletAfficherListeBilans</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ServletAvantNotif</servlet-name>
+        <servlet-class>servlets.ServletAvantNotif</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletEnvoyerNotif</servlet-name>
+        <servlet-class>servlets.ServletEnvoyerNotif</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletViewClientProgByCoach</servlet-name>
+        <servlet-class>servlets.ServletViewClientProgByCoach</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletViewClientSeances</servlet-name>
+        <servlet-class>servlets.ServletViewClientSeances</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletVoirClient</servlet-name>
+        <servlet-class>servlets.ServletVoirClient</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletVoirPrgm</servlet-name>
+        <servlet-class>servlets.ServletVoirPrgm</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ViewClientProgByCoach</servlet-name>
         <jsp-file>/JSP/ViewClientProgByCoach.jsp</jsp-file>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>ServletDisplayPrgm</servlet-name>
-        <url-pattern>/ServletDisplayPrgm</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ServletVoirPrgm</servlet-name>
-        <url-pattern>/ServletVoirPrgm</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ServletAffecterProgramme</servlet-name>
-        <url-pattern>/ServletAffecterProgramme</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ServletVoirClient</servlet-name>
-        <url-pattern>/ServletVoirClient</url-pattern>
-    </servlet-mapping>
+    <servlet>
+        <servlet-name>ViewEnvoyerNotif</servlet-name>
+        <jsp-file>/JSP/ViewEnvoyerNotif.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewListeClientByCoach</servlet-name>
+        <jsp-file>/JSP/ViewListeClientByCoach.jsp</jsp-file>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletAffPrgm</servlet-name>
         <url-pattern>/ServletAffPrgm</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ServletViewClientProgByCoach</servlet-name>
-        <url-pattern>/ServletViewClientProgByCoach</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ServletViewClientSeances</servlet-name>
-        <url-pattern>/ServletViewClientSeances</url-pattern>
+        <servlet-name>ServletAffecterProgramme</servlet-name>
+        <url-pattern>/ServletAffecterProgramme</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ServletAfficherBilan</servlet-name>
@@ -77,8 +69,40 @@
         <url-pattern>/ServletAfficherListeBilans</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>ServletAvantNotif</servlet-name>
+        <url-pattern>/ServletAvantNotif</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletEnvoyerNotif</servlet-name>
+        <url-pattern>/ServletEnvoyerNotif</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletViewClientProgByCoach</servlet-name>
+        <url-pattern>/ServletViewClientProgByCoach</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletViewClientSeances</servlet-name>
+        <url-pattern>/ServletViewClientSeances</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletVoirClient</servlet-name>
+        <url-pattern>/ServletVoirClient</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletVoirPrgm</servlet-name>
+        <url-pattern>/ServletVoirPrgm</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ViewClientProgByCoach</servlet-name>
         <url-pattern>/ViewClientProgByCoach</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewEnvoyerNotif</servlet-name>
+        <url-pattern>/ViewEnvoyerNotif</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewListeClientByCoach</servlet-name>
+        <url-pattern>/ViewListeClientByCoach</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
