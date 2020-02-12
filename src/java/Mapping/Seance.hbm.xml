@@ -17,6 +17,21 @@
         <property name="nomseance" type="string">
             <column name="NOMSEANCE" length="32" />
         </property>
+        <property name="ordreseance" type="java.lang.Integer">
+            <column name="ORDRESEANCE" />
+        </property>
+        <property name="mintours" type="java.lang.Integer">
+            <column name="MINTOURS" />
+        </property>
+        <property name="maxtours" type="java.lang.Integer">
+            <column name="MAXTOURS" />
+        </property>
+        <property name="tempsrecup" type="java.lang.Double">
+            <column name="TEMPSRECUP" precision="5" />
+        </property>
+        <property name="tempsexo" type="java.lang.Double">
+            <column name="TEMPSEXO" precision="5" />
+        </property>
         <property name="isbilan" type="java.lang.Boolean">
             <column name="ISBILAN" />
         </property>
