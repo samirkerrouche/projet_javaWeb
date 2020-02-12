@@ -33,6 +33,7 @@
         // à partir de cet objet Programme on crée des variables
         int codeProg = programme.getCodeprog();
         String nomProg = programme.getNomprog();
+        int codeCli = client.getCodecli();
     %>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -65,6 +66,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Programme</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="bilan-tab" onclick="AfficherListeBilans(<%= codeCli%>);" data-toggle="tab" href="#bilan" role="tab" aria-controls="profile" aria-selected="false">Bilan</a>
+                                </li>                                
                             </ul>
                         </div>
                     </div>
@@ -117,6 +121,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <%-- Onglet programme --%>
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -152,6 +157,21 @@
                                     </div>
                                 </div>
                             </div>
+                            <%-- Fin Onglet Programme --%>
+                            <%-- Onglet Bilan --%>
+                            <div class="tab-pane fade" id="bilan" role="tabpanel" aria-labelledby="bilan-tab">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        Choisir un bilan : <select id="lstBilan" onchange="AfficherBilan(<%= codeCli%>)"></select>
+                                    </div>                               
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="resultatBilan" class="col-md-6"></div>        
+                                    </div>                              
+                                </div>   
+                            </div>
+                            <%-- Fin Onglet Bilan --%>
                         </div>
                     </div>
                 </div>
