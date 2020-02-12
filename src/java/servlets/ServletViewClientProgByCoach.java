@@ -52,19 +52,19 @@ public class ServletViewClientProgByCoach extends HttpServlet {
             // Les requetes SQL native
             List resultatCodeProg = session.createSQLQuery("SELECT aff.CODEPROG "
                     + "FROM AFFECTER aff "
-                    + "WHERE aff.CODECLI = " + client.getCodecli() + " "
+                    + "WHERE aff.CODECLI = " + idClient + " " //+ client.getCodecli() + " "
                     + "AND aff.DATEAFF <= SYSDATE() "
                     + "AND aff.DATEFINAFF IS NULL "
                     + "AND aff.STATUTAFF = 'en cours'").list();
             List resultatDateAff = session.createSQLQuery("SELECT aff.DATEAFF "
                     + "FROM AFFECTER aff "
-                    + "WHERE aff.CODECLI = " + client.getCodecli() + " "
+                    + "WHERE aff.CODECLI = " + idClient + " " // + client.getCodecli() + " "
                     + "AND aff.DATEAFF <= SYSDATE() "
                     + "AND aff.DATEFINAFF IS NULL "
                     + "AND aff.STATUTAFF = 'en cours'").list();
             List resultatStatutAff = session.createSQLQuery("SELECT aff.STATUTAFF "
                     + "FROM AFFECTER aff "
-                    + "WHERE aff.CODECLI = " + client.getCodecli() + " "
+                    + "WHERE aff.CODECLI = " + idClient + " " // + client.getCodecli() + " "
                     + "AND aff.DATEAFF <= SYSDATE() "
                     + "AND aff.DATEFINAFF IS NULL "
                     + "AND aff.STATUTAFF = 'en cours'").list();
@@ -89,7 +89,7 @@ public class ServletViewClientProgByCoach extends HttpServlet {
             // aller vers la page de ViewClientProgByCoach
             rd.forward(request, response);
             // ferméture de la session et commit la transaction
-            t.commit();
+            //t.commit();
             //session.close();
         } catch (Exception ex) {
             // en cas d'erreur
