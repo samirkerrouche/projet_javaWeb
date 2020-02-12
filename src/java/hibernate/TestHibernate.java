@@ -12,6 +12,7 @@ import Mapping.ExecuterExo;
 import Mapping.ExecuterExoId;
 import Mapping.Exercice;
 import Mapping.OccurrenceS;
+import Mapping.Profil;
 import Mapping.Programme;
 import Mapping.Seance;
 import java.util.AbstractList;
@@ -38,9 +39,24 @@ public class TestHibernate {
      */
     public static void main(String[] args) {
 
-        Programme pTest = new Programme("TestdeGetCode", Boolean.FALSE, null, null, null, null);
-        //insertProgram(pTest);
-        System.out.println(getProgrammes());
+//        Programme pTest = new Programme("TestdeGetCode", Boolean.FALSE, null, null, null, null);
+//        //insertProgram(pTest);
+//        System.out.println(getProgrammes());
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction t;
+        try {
+            t = session.beginTransaction();
+        } catch (Exception e) {
+            t = session.getTransaction();
+        }
+        String hql = "from Programme";
+        Query q = session.createQuery(hql);
+        for(Programme prgm : (List<Programme>) q.list()){
+            for(Object str : prgm.getProfils()){
+                Profil string = (Profil) str;
+                System.out.println(string.getNomprof());
+            }
+        }
     }
 
     /**
@@ -69,7 +85,7 @@ public class TestHibernate {
     /**
      * *
      *
-     * @param nomCli
+     * @param client
      * @return les programmes tries selon un Client
      */
     public static List<Programme> sortPrograms(Client client) {
@@ -85,9 +101,12 @@ public class TestHibernate {
         System.out.println(client.getNomcli());
         Query q;
         if (client.getProfil().getCodeprof() != null) {
-            hql = "from Programme as p where p.profil.codeprof =" + client.getProfil().getCodeprof();
+            System.out.println(client.getProfil().getCodeprof());
+            hql = "from Programme as p where p.profils.codeprof =" + client.getProfil().getCodeprof();
             q = session.createQuery(hql);
-            programmes = (ArrayList<Programme>) q.list();
+            programmes = (List<Programme>) q.list();
+            System.out.print("Ensemble des programmes répondant au besoin : ");
+            System.out.println(programmes.size());
         }
         hql = "from Programme";
         q = session.createQuery(hql);
@@ -207,16 +226,7 @@ public class TestHibernate {
             t = session.beginTransaction();
         } catch (Exception e) {
             t = session.getTransaction();
-        }        //Tous les clients qui n'ont pas eu d'affectation de programme.
-//        String hql = "from Client as c where c.codecli NOT IN "
-//                + "(select a.client.codecli "
-//                + "from Affecter as a)"
-//                + "and c.statutcli= 'En attente'"
-//                + "ORDER BY c.dateinscriptioncli ASC";
-//        Query q = session.createQuery(hql);
-//        List<Client> clients = (List<Client>) q.list();
-        // t.commit();
-        //session.close();
+        }
         List<Client> renvoi = new ArrayList<>();
         String hql1 = "from Client as c where c.codecli not in"
                 + " (select a.client.codecli "

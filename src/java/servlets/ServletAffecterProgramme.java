@@ -141,6 +141,14 @@ public class ServletAffecterProgramme extends HttpServlet {
             AffecterId idAff = new AffecterId(progRef.getCodeprog(), client.getCodecli(), date);
             Affecter affecterP = new Affecter(idAff, client, progRef);
             TestHibernate.insertAffectation(affecterP);
+            try (PrintWriter out = response.getWriter()) {
+                /*----- Ecriture de la page XML -----*/
+                out.println("<?xml version=\"1.0\"?>");
+                out.println("<reponse>");
+                out.println("<erreur>NON</erreur>");
+                out.println("</reponse>");
+                
+            }
         } else { // interdire l affectation
             try (PrintWriter out = response.getWriter()) {
                 /*----- Ecriture de la page XML -----*/

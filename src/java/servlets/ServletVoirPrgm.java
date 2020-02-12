@@ -10,6 +10,7 @@ import Mapping.Client;
 import Mapping.ComposerCircuit;
 import Mapping.ComposerSeance;
 import Mapping.Exercice;
+import Mapping.Profil;
 import hibernate.TestHibernate;
 import Mapping.Programme;
 import Mapping.Seance;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -60,12 +62,21 @@ public class ServletVoirPrgm extends HttpServlet {
                         String[] t = nomCli.split("_");
                         nomCli = t[1];
                         String prenomCli = t[0];
+                        ArrayList<Programme> prgms = new ArrayList<>();
                         Client client = TestHibernate.getClient(nomCli, prenomCli);
-                        try {
-                            programmes = TestHibernate.sortPrograms(client);
-                        } catch (Exception e) {
-                            programmes = TestHibernate.getProgrammes();
+                        programmes = TestHibernate.getProgrammes();
+                        for (Programme prgm : programmes) {
+                            Set<Profil> profilP = (Set<Profil>) prgm.getProfils();
+                            if (profilP.contains(client.getProfil())) {
+                                prgms.add(prgm);
+                            }
                         }
+                        for (Programme prgm : programmes) {
+                            if (!prgms.contains(prgm)) {
+                                prgms.add(prgm);
+                            }
+                        }
+                        programmes = (List<Programme>) prgms.clone();
                     }
 
                     out.println("<programmes>");
@@ -97,6 +108,11 @@ public class ServletVoirPrgm extends HttpServlet {
                 out.println("<?xml version=\"1.0\"?>");
                 out.println("<programme>");
                 out.println("<nbSeances>" + mapSeances.size() + "</nbSeances>");
+                for (Object profil : prgm.getProfils()) {
+                    Profil pro = (Profil) profil;
+                    out.println("<profil>" + pro.getNomprof() + "</profil>");
+                }
+
                 for (Map.Entry<Seance, List<ComposerSeance>> e : mapSeances.entrySet()) {
 
                     if (e.getKey().getCircuit() == null) {

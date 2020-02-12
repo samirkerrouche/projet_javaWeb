@@ -128,10 +128,17 @@ function giveDataPrgm() {
         if (xhr.status === 200) {
             var arbrePrgm = xhr.responseXML;
             var lstSeances = arbrePrgm.getElementsByTagName("seance");
-            var nbSeance = arbrePrgm.getElementsByTagName("nbSeances")[0].firstChild.nodeValue;
-            var chaine = "";
+//            var nbSeance = arbrePrgm.getElementsByTagName("nbSeances")[0].firstChild.nodeValue;
             var zonePrgm = document.getElementById("zonePrgm");
+            var chaine = "";
             zonePrgm.innerHTML = chaine;
+            var profils = arbrePrgm.getElementsByTagName("profil");
+            chaine += "<div> Profil auxquels le programme répond : <ul id='toFlex'>";
+            for (var i = 0; i < profils.length; i++) {
+                chaine += "<li>" + profils[i].firstChild.nodeValue + "</li>";
+            }
+            chaine += "</ul>";
+
             for (var i = 0; i < lstSeances.length; i++) { //Les seances
                 //On affiche la seance
                 chaine += "<div id='nomSeance'>" + lstSeances[i].firstChild.nodeValue + "</div>";
@@ -154,7 +161,7 @@ function giveDataPrgm() {
                 }
                 chaine += "</div>";
             }
-            var zonePrgm = document.getElementById("zonePrgm");
+           // var zonePrgm = document.getElementById("zonePrgm");
             zonePrgm.innerHTML = chaine;
 
         }
@@ -163,19 +170,19 @@ function giveDataPrgm() {
 }
 
 function affecterPrgm() {
+    var resultat = document.getElementById("resultat");
     var nomclient = document.getElementById("lstClients").value;
     var nomPrgm = document.getElementById("lstPrgm").value;
-    alert(nomclient + " et le programme " + nomPrgm);
+    alert("Le programme " + nomPrgm + " sera affecté à : " + nomclient);
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "ServletAffecterProgramme?nomCli=" + nomclient + "&nomProg=" + nomPrgm);
     xhr.onload = function () {
         if (xhr.status === 200) {
-            var resultat = document.getElementById("resultat");
             var result = xhr.responseXML;
-            var erreur = result.getElementsByTagName("erreur")[0];
-            resultat.innerHTML = "";
-            if (erreur === null) {
-                resultat.innerHTML = "Le programme a été affecté";
+            var erreur = result.getElementsByTagName("erreur");
+            if (erreur === "NON") {
+                resultat.innerHTML = "Le programme a été affecté ! ";
+                alert("Le programme a été affecté ! ");
             } else {
                 resultat.innerHTML = "Vous ne pouvez pas affecter de programme personnalisé";
             }

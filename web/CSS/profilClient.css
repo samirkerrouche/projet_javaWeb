@@ -137,3 +137,10 @@ footer > a{
     background-color: white;
     text-align: center;
 }
+
+#nomSeance{
+    color : black;
+    background-color: white;
+    text-align: center;
+    font-size: 2em;
+}
