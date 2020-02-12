@@ -36,6 +36,14 @@
         <servlet-name>ViewListeClientByCoach</servlet-name>
         <jsp-file>/JSP/ViewListeClientByCoach.jsp</jsp-file>
     </servlet>
+    <servlet>
+        <servlet-name>ServletAfficherBilan</servlet-name>
+        <servlet-class>servlets.ServletAfficherBilan</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletAfficherListeBilans</servlet-name>
+        <servlet-class>servlets.ServletAfficherListeBilans</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletDisplayPrgm</servlet-name>
         <url-pattern>/ServletDisplayPrgm</url-pattern>
@@ -71,6 +79,14 @@
     <servlet-mapping>
         <servlet-name>ViewListeClientByCoach</servlet-name>
         <url-pattern>/ViewListeClientByCoach</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAfficherBilan</servlet-name>
+        <url-pattern>/ServletAfficherBilan</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAfficherListeBilans</servlet-name>
+        <url-pattern>/ServletAfficherListeBilans</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
