@@ -11,6 +11,7 @@ import Mapping.ExecuterCircuit;
 import Mapping.ExecuterExo;
 import Mapping.ExecuterExoId;
 import Mapping.Exercice;
+import Mapping.Notifier;
 import Mapping.OccurrenceS;
 import Mapping.Profil;
 import Mapping.Programme;
@@ -576,6 +577,18 @@ public class TestHibernate {
             t = session.getTransaction();
         }
         session.save(affecter);
+        t.commit();
+    }
+    
+        public static void insertNotif(Notifier notif) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction t;
+        try {
+            t = session.beginTransaction();
+        } catch (Exception e) {
+            t = session.getTransaction();
+        }
+        session.save(notif);
         t.commit();
     }
 }

@@ -66,6 +66,10 @@ function AfficherListeBilans(codeCli) {
     // On précise ce que l'on va faire quand on aura reçu la réponse du serveur.
     xhr.onload = function () {
         if (xhr.status === 200) {
+            //Remise à blanc de la zone
+            var eltPrec = document.getElementById("resultatBilan");
+            eltPrec.innerHTML = "";
+            
             // Elément html que l'on va mettre à jour.
             var elt = document.getElementById("lstBilan");
             // doc de la réponse HTML

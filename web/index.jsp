@@ -13,6 +13,7 @@
     </head>
     <body>
         <a href="affecterProgramme.html">affecter un programme</a></br>
-        <a href="ServletViewClientProgByCoach?idclient=2">visualiser un profil client et son programme</a>
+        <a href="ServletViewClientProgByCoach?idclient=2">visualiser un profil client et son programme</a></br>
+        <a href="ViewListeClientByCoach">Envoyer notification</a>
     </body>
 </html>
